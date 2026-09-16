@@ -1,0 +1,2831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjohn Ajiesh - Multi-instrumentalist & Music Producer</title>
+    <!-- Google Fonts: Inter for body, Montserrat for headings, Roboto Mono for DAW-like text, Orbitron for futuristic text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=Roboto+Mono:wght@400;500&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <!-- Wavesurfer.js CDN for Dynamic Waveforms -->
+<script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* style.css (Updated for Advanced DAW-inspired Dark Theme + Tooltips) */
+        :root {
+            /* These will be dynamically updated by JavaScript */
+            --color-accent: #B58744; 
+            --color-accent-light: rgba(181, 135, 68, 0.2); 
+            --color-accent-hover: #C69D59; 
+            /* RGB values for dynamic shadows */
+            --color-accent-rgb-r: 181;
+            --color-accent-rgb-g: 135;
+            --color-accent-rgb-b: 68;
+
+            --font-heading: 'Montserrat', sans-serif;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'Roboto Mono', monospace; /* New mono font for code/data display */
+            --font-futuristic: 'Orbitron', sans-serif; /* New futuristic font for alias */
+
+            /* Dark DAW Theme Colors (Base) */
+            --color-bg-primary: #282828; /* Dark charcoal grey - main background */
+            --color-bg-panel: #383838;   /* Slightly lighter grey for panels/modules */
+            --color-bg-secondary: #4A4A4A; /* Medium grey for cards, inputs, recessed elements */
+            --color-bg-active: #5C5C5C; /* Even lighter grey for pressed/active states */
+            --color-bg-darkest: #1F1F1F; /* For deepest recesses/borders */
+
+            --color-text-primary: #E8E8E8; /* Light grey for main headings, strong text */
+            --color-text-secondary: #B0B0B0; /* Medium light grey for body text */
+            --color-text-muted: #808080; /* Muted grey for less emphasis */
+            --color-text-highlight: #00A3CC; /* A subtle blue for numerical/data highlights, used when stopped */
+            
+            /* DAW-like Borders and Shadows */
+            --border-width: 1px;
+            --color-border-light: rgba(255, 255, 255, 0.08); /* Subtle light border for dark theme */
+            --color-border-medium: rgba(255, 255, 255, 0.15); /* Slightly more prominent */
+            --color-shadow-inner: inset 0 1px 2px rgba(0,0,0,0.4); /* Darker inner shadow for recessed look */
+            --color-shadow-outer-sm: 0 1px 3px rgba(0,0,0,0.3); /* Small outer shadow for elevated look */
+            --color-shadow-outer-md: 0 4px 15px rgba(0,0,0,0.5); /* Medium outer shadow for larger panels */
+
+            /* NEW: Pan accent colors */
+            --color-pan-left-accent: 0, 163, 204; /* RGB for subtle blue */
+            --color-pan-right-accent: 255, 77, 77; /* RGB for subtle red */
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-secondary);
+            overflow-x: hidden; /* Prevent horizontal scrollbars */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            margin: 0; /* Ensure no default body margin */
+            line-height: 1.6;
+        }
+
+        /* Prevent body scroll when mobile menu is open */
+        body.mobile-menu-open {
+            overflow-y: hidden;
+        }
+
+        /* Custom Scrollbar Styling */
+        ::-webkit-scrollbar { 
+            width: 8px; 
+            height: 8px; /* For horizontal scrollbars if they appear */
+        }
+        ::-webkit-scrollbar-track { 
+            background: var(--color-bg-panel); 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--color-accent); /* Dynamic scrollbar thumb */
+            border-radius: 4px; 
+        }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: var(--color-accent-hover); /* Dynamic scrollbar thumb hover */
+        }
+
+        /* Headings and Typographic Elements */
+        h1, h2, h3, h4, h5, h6, .font-heading-style {
+            font-family: var(--font-heading);
+            color: var(--color-text-primary);
+            letter-spacing: -0.01em;
+        }
+        .section-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem); /* Responsive title size */
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            color: var(--color-text-muted);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            margin-bottom: 3.5rem;
+        }
+
+        /* Header Styling (Top "Control Bar") */
+        #main-header {
+            background-color: var(--color-bg-panel); /* Header panel bg */
+            border-bottom: var(--border-width) solid var(--color-border-medium);
+            box-shadow: var(--color-shadow-outer-sm);
+            padding-left: 1.5rem; /* Slightly less padding for controls */
+            padding-right: 1.5rem;
+            height: 4.5rem; /* Fixed height for control bar */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 50;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .header-scrolled { /* Applied on scroll via JavaScript, but less pronounced now */
+            background-color: var(--color-bg-panel); /* Stays constant */
+            box-shadow: var(--color-shadow-outer-md);
+            border-bottom-color: var(--color-border-medium);
+        }
+        #main-header .site-title {
+            font-size: 1.4rem; /* Slightly smaller for control bar */
+            font-weight: 700;
+            letter-spacing: 0.05em; /* A bit more spaced for a techy feel */
+            color: var(--color-text-primary);
+            text-transform: uppercase;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            background-color: var(--color-bg-secondary);
+            border: var(--border-width) solid var(--color-border-medium);
+            box-shadow: var(--color-shadow-inner); /* Recessed look */
+            font-family: var(--font-mono); /* Make site title mono as a "project display" */
+        }
+        #main-header nav a.nav-link {
+            font-family: var(--font-mono); /* Monospace for nav links */
+            font-size: 0.85rem;
+            padding: 0.4rem 0.9rem;
+            border-radius: 4px;
+            transition: color 0.2s ease, background-color 0.2s ease;
+            color: var(--color-text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            border: var(--border-width) solid transparent;
+        }
+        #main-header nav a.nav-link:hover { 
+            color: var(--color-accent); /* Dynamic hover */
+            background-color: var(--color-accent-light); /* Dynamic subtle accent highlight */
+            border-color: var(--color-accent); /* Dynamic border */
+        }
+        #main-header nav a.nav-link.active-link { /* active-link class applied by JS */
+            color: var(--color-bg-panel); 
+            background-color: var(--color-accent); /* Dynamic solid accent fill */
+            border-color: var(--color-accent); /* Dynamic border */
+            box-shadow: 0 2px 8px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.3); /* Dynamic accent shadow */
+        }
+
+        /* Transport Controls */
+        .transport-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background-color: var(--color-bg-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: var(--border-width) solid var(--color-border-medium);
+            box-shadow: var(--color-shadow-inner);
+        }
+        .transport-controls span {
+            color: var(--color-text-highlight); /* This will be overridden by JS for dynamic BPM color */
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            text-shadow: 0 0 5px rgba(0, 163, 204, 0.5); /* Glowing effect (base for highlights) */
+        }
+        .transport-btn {
+            width: 2.2rem;
+            height: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--color-bg-darkest); 
+            border: var(--border-width) solid var(--color-border-medium);
+            color: var(--color-text-primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.15s ease-out; 
+            box-shadow: var(--color-shadow-outer-sm);
+        }
+        .transport-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--color-shadow-outer-md);
+        }
+        /* Specific transport button colors are now mostly handled by dynamic accent color,
+           but these remain for the special icon color when active. */
+        .transport-btn.record {
+            color: #FF4D4D; /* Red for record icon */
+        }
+        .transport-btn.play {
+            color: #4CAF50; /* Green for play icon */
+        }
+        .transport-btn.stop {
+            color: #FF9800; /* Orange for stop icon */
+        }
+        .transport-btn:active { 
+            background-color: var(--color-bg-active);
+            box-shadow: var(--color-shadow-inner);
+            transform: none;
+        }
+        .transport-btn.active { 
+            background-color: var(--color-accent); /* Dynamic active state */
+            color: var(--color-bg-panel);
+            box-shadow: var(--color-shadow-inner);
+            border-color: var(--color-accent);
+        }
+
+        /* Mobile Hamburger icon color */
+        .hamburger-line { 
+            background-color: var(--color-text-primary); 
+        }
+        .mobile-nav-toggle[aria-expanded="true"] .hamburger-top,
+        .mobile-nav-toggle[aria-expanded="true"] .hamburger-bottom { 
+            background-color: var(--color-accent); /* Dynamic accent */
+        }
+
+        /* Mobile Menu Styling */
+        #mobile-menu {
+            background-color: var(--color-bg-panel); 
+            backdrop-filter: blur(10px) saturate(180%);
+            -webkit-backdrop-filter: blur(10px) saturate(180%);
+            border-top: var(--border-width) solid var(--color-border-medium);
+        }
+        #mobile-menu nav a.mobile-nav-link {
+            font-family: var(--font-mono);
+            color: var(--color-text-primary);
+        }
+        #mobile-menu nav a.mobile-nav-link:hover, 
+        #mobile-menu nav a.mobile-nav-link.active-link { 
+            color: var(--color-accent); /* Dynamic accent */
+            background-color: var(--color-accent-light); /* Dynamic accent light */
+        }
+
+        /* Hero Section Styling (Main Arrangement/Session View Panel) */
+        main {
+            padding-top: 4.5rem; 
+            background-color: var(--color-bg-primary); 
+        }
+        #hero {
+            min-height: calc(100vh - 4.5rem); 
+            padding-top: 2rem; 
+            padding-bottom: 4rem;
+            /* Dynamic radial gradient based on accent color */
+            background-image: radial-gradient(circle at center, var(--color-accent-light) 0%, rgba(255,255,255,0) 60%);
+            background-size: 150% 150%;
+            background-position: center;
+        }
+        #hero .hero-content-wrapper {
+            background-color: var(--color-bg-panel); 
+            border: var(--border-width) solid var(--color-border-light);
+            border-radius: 12px;
+            box-shadow: var(--color-shadow-outer-md);
+            padding: 3rem 2rem;
+            min-height: 500px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #hero h1 {
+            color: var(--color-text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+        }
+        /* Adjusted for larger font and initial glow for animation */
+        #hero #alias-text { 
+            font-family: var(--font-futuristic); /* Applied new futuristic font */
+            font-size: clamp(1.2rem, 3vw, 1.6rem); /* Increased font size */
+            color: var(--color-accent); /* Match accent for glow */
+            /* Initial subtle glow, GSAP will animate this value */
+            text-shadow: 0 0 5px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.3); 
+            margin-bottom: 0.75rem; /* Adjust spacing */
+            margin-top: 0; /* Remove top margin from previous style */
+            font-weight: 500; /* Medium weight for Orbitron for better readability */
+        }
+
+        #hero .hero-tagline {
+            color: var(--color-text-muted);
+            font-family: var(--font-mono); 
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            max-width: 700px;
+        }
+        /* Animated Quote Styling (like a text display/log window) */
+        #animated-quote {
+            min-height: 2.5em; 
+            display: inline-block; 
+            font-style: italic;
+            position: relative; 
+            opacity: 0; 
+            padding: 0.6rem 1.2rem;
+            border: var(--border-width) solid var(--color-border-medium);
+            background-color: var(--color-bg-darkest); 
+            border-radius: 6px;
+            font-family: var(--font-mono); 
+            color: var(--color-accent); /* Dynamic highlight color for quote text */
+            box-shadow: var(--color-shadow-inner); 
+            max-width: 90%; 
+            text-align: left; 
+        }
+        #animated-quote .quote-author {
+            font-size: 0.8em;
+            font-style: normal;
+            display: block;
+            margin-top: 0.5em;
+            color: var(--color-text-muted);
+            text-align: right; 
+            width: 100%;
+        }
+
+        /* Custom Button Styling (Flat & Recessed look) */
+        .btn-custom {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 1.8rem; 
+            border-radius: 6px; 
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            text-align: center;
+            border: var(--border-width) solid var(--color-border-medium); 
+            box-shadow: var(--color-shadow-outer-sm); 
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        .btn-custom-primary {
+            background-color: var(--color-accent); /* Dynamic primary button background */
+            color: var(--color-bg-panel); 
+            border-color: var(--color-accent); /* Dynamic primary button border */
+            box-shadow: 0 4px 12px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.25); /* Dynamic shadow */
+        }
+        .btn-custom-primary:hover {
+            background-color: var(--color-accent-hover); /* Dynamic primary button hover */
+            border-color: var(--color-accent-hover); /* Dynamic primary button hover border */
+            box-shadow: 0 6px 18px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.35); /* Dynamic hover shadow */
+            transform: translateY(-2px);
+        }
+        .btn-custom-secondary { 
+            background-color: var(--color-bg-panel); 
+            color: var(--color-accent); /* Dynamic secondary button text */
+            border: var(--border-width) solid var(--color-border-medium);
+        }
+        .btn-custom-secondary:hover {
+            background-color: var(--color-bg-secondary); 
+            color: var(--color-text-primary); 
+            box-shadow: var(--color-shadow-outer-sm);
+            transform: translateY(-1px);
+        }
+        .btn-custom:active { 
+            background-color: var(--color-bg-active);
+            box-shadow: var(--color-shadow-inner);
+            transform: none;
+        }
+
+
+        /* Section Base Styling (Modules) */
+        section { 
+            padding-top: 3rem; 
+            padding-bottom: 3rem; 
+            position: relative; 
+            overflow: hidden; 
+            background-color: var(--color-bg-primary); 
+        }
+        @media (min-width: 768px) { 
+            section { 
+                padding-top: 4rem; 
+                padding-bottom: 4rem; 
+            } 
+        }
+        .section-border-t { 
+            border-top: var(--border-width) solid var(--color-border-medium); 
+        }
+        .content-panel {
+            background-color: var(--color-bg-panel); 
+            border: var(--border-width) solid var(--color-border-light);
+            border-radius: 12px;
+            box-shadow: var(--color-shadow-outer-md);
+            padding: 3rem;
+            /* Removed overflow-x: auto from here */
+        }
+
+        /* Card Styling (Service, Portfolio Placeholder, Approach) */
+        .service-card { 
+            background-color: var(--color-bg-secondary); 
+            border: var(--border-width) solid var(--color-border-light);
+            border-radius: 8px; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            padding: 1.5rem; 
+            display: flex;
+            flex-direction: column;
+            height: 100%; 
+            box-shadow: var(--color-shadow-outer-sm); 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .service-card:hover {
+            transform: translateY(-4px); 
+            border-color: var(--color-accent); /* Dynamic border color on hover */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2), 0 0 15px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.15); /* Dynamic hover shadow */
+        }
+        .service-card h3 {
+            font-size: 1.1rem; 
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-primary);
+        }
+        .service-card p {
+            font-size: 0.85rem; 
+            color: var(--color-text-muted);
+            line-height: 1.5;
+            flex-grow: 1; 
+            margin-bottom: 0.8rem;
+        }
+        .service-card .icon-container {
+            color: var(--color-accent); 
+            font-size: 1.4rem; 
+            margin-bottom: 0.6rem;
+            align-self: center; 
+        }
+        
+        /* Portfolio Cards - Specific Styling for PS4-like Carousel */
+        .portfolio-card { 
+            background-color: var(--color-bg-secondary); 
+            border: var(--border-width) solid var(--color-border-light);
+            border-radius: 8px; 
+            padding: 1.5rem; 
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--color-shadow-outer-sm); 
+            position: relative; 
+            overflow: hidden; 
+            /* Fixed width for carousel items */
+            flex-shrink: 0; /* Prevent cards from shrinking */
+            width: 280px; /* Default width for carousel cards */
+            margin-right: 1.5rem; /* Spacing between cards */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            z-index: 1; /* Ensure meters stay within bounds */
+        }
+
+        /* Responsive width adjustments for portfolio cards */
+        @media (min-width: 640px) { /* sm */
+            .portfolio-card { width: 300px; }
+        }
+        @media (min-width: 768px) { /* md */
+            .portfolio-card { width: 320px; }
+        }
+        @media (min-width: 1024px) { /* lg */
+            .portfolio-card { width: 350px; }
+        }
+        
+        .portfolio-card:hover, .portfolio-card.active-carousel-item {
+            transform: scale(1.08) translateY(-5px); /* Scale up and slight lift */
+            border-color: var(--color-accent); 
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3), 0 0 20px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.2); 
+            z-index: 5; /* Bring to front on hover */
+        }
+
+        .portfolio-card h3 {
+            font-size: 1.1rem; 
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-primary);
+        }
+        .portfolio-card p {
+            font-size: 0.85rem; 
+            color: var(--color-text-muted);
+            line-height: 1.5;
+            flex-grow: 1; 
+            margin-bottom: 0.8rem;
+        }
+        .portfolio-card .icon-container {
+            color: var(--color-accent); 
+            font-size: 1.4rem; 
+            margin-bottom: 0.6rem;
+            align-self: center; 
+        }
+        .portfolio-card .placeholder-tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem; 
+            color: var(--color-accent); 
+            background-color: var(--color-accent-light); 
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-top: auto; 
+            border: var(--border-width) solid var(--color-accent); 
+        }
+
+        /* DAW-like Meter for Portfolio Cards (Updated for Stereo) */
+        .portfolio-card .meter {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px; /* Reduced width */
+            height: 100%;
+            background-color: var(--color-bg-darkest); 
+            border-left: var(--border-width) solid var(--color-border-medium);
+            display: flex;
+            flex-direction: row; /* Arrange bars horizontally */
+            justify-content: space-between; /* Space them out */
+            padding: 1px; /* Reduced padding */
+            box-shadow: var(--color-shadow-inner);
+            z-index: 10; 
+        }
+        .portfolio-card .meter-bar {
+            width: 48%; /* Each bar takes nearly half the width */
+            /* Gradient from green (bottom) to orange (top) */
+            background: linear-gradient(to top, #4CAF50, #FFC107, #FF9800); /* Green to Yellow to Orange */
+            height: 0%; 
+            transition: background-color 0.1s ease-out; /* Keep for peak overrides */
+            margin-top: 1px; 
+            align-self: flex-end; /* Align bars to the bottom of the meter */
+        }
+        /* Meter color thresholds (these will now override the gradient for peaks) */
+        .meter-bar.peak-yellow { background-color: #FFEB3B; } /* Solid yellow for peaks */
+        .meter-bar.peak-red { background-color: #FF4D4D; }     /* Solid red for clipping */
+
+        /* Portfolio Carousel Container */
+        .portfolio-carousel-wrapper {
+            position: relative;
+            padding-bottom: 1.5rem; /* Space for scroll buttons */
+        }
+
+        .portfolio-carousel-container {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory; /* Snap to cards */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            padding-bottom: 1.5rem; /* Prevent content from being hidden by scrollbar */
+            scroll-behavior: smooth; /* For smooth programmatic scrolling */
+
+            /* Hide scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+        .portfolio-carousel-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .portfolio-carousel-container > .portfolio-card {
+            scroll-snap-align: start; /* Align items to the start of the scroll area */
+        }
+
+        /* Carousel Navigation Buttons */
+        .carousel-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--color-bg-secondary);
+            border: var(--border-width) solid var(--color-border-medium);
+            color: var(--color-text-primary);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--color-shadow-outer-sm);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+        .carousel-nav-btn:hover {
+            background-color: var(--color-accent);
+            color: var(--color-bg-panel);
+            border-color: var(--color-accent);
+            transform: translateY(-50%) scale(1.05);
+            box-shadow: 0 4px 12px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.25);
+        }
+        .carousel-nav-btn:active {
+            background-color: var(--color-bg-active);
+            box-shadow: var(--color-shadow-inner);
+            transform: translateY(-50%);
+        }
+        /* Adjusted positioning for better mobile visibility */
+        .carousel-nav-btn.left { left: 0.5rem; } 
+        .carousel-nav-btn.right { right: 0.5rem; } 
+
+        /* Carousel Dots Indicator */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem; /* Space between carousel and dots */
+        }
+        .carousel-indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--color-border-medium); /* Default/inactive color */
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .carousel-indicator-dot.active {
+            background-color: var(--color-accent); /* Active color */
+            transform: scale(1.2);
+        }
+        .carousel-indicator-dot:hover {
+            background-color: var(--color-accent-hover);
+        }
+
+
+        /* Services Section (Mixing Window Styling) */
+        #services .content-panel {
+            background-color: var(--color-bg-darkest); 
+            border: var(--border-width) solid var(--color-border-medium);
+            border-radius: 12px;
+            box-shadow: var(--color-shadow-outer-md);
+            padding: 2rem; 
+            /* Removed overflow-x: auto from here */
+        }
+
+        /* NEW: Mixer Scroll Wrapper */
+        .mixer-scroll-wrapper {
+            overflow-x: auto; /* This will handle horizontal scrolling */
+            overflow-y: hidden; /* Prevent vertical scrollbar from appearing here */
+            padding-bottom: 1rem; /* Space for scrollbar if it appears */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            /* Hide scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+        .mixer-scroll-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+
+        #services .channel-strip-container {
+            display: grid;
+            grid-auto-flow: column; 
+            grid-auto-columns: minmax(180px, 1fr); 
+            gap: 1.5rem; 
+            /* padding-bottom: 1rem; This is now on mixer-scroll-wrapper */
+        }
+
+        .channel-strip {
+            background-color: var(--color-bg-panel); 
+            border: var(--border-width) solid var(--color-border-light);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--color-shadow-outer-sm);
+            flex-shrink: 0; 
+            min-width: 180px; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added transition for hover */
+            /* NEW: Initial border color for pan effect */
+            border-color: var(--color-border-light);
+        }
+        /* Hover effect for the entire channel strip */
+        .channel-strip:hover {
+            transform: translateY(-4px); /* Lift effect */
+            border-color: var(--color-accent); /* Accent border */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2), 0 0 15px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.15); /* Accent shadow */
+        }
+
+
+        .channel-strip h3 {
+            font-size: 1.1rem; 
+            margin-top: 0.5rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
+            color: var(--color-text-primary);
+            font-family: var(--font-mono);
+            letter-spacing: 0.02em;
+            transition: opacity 0.3s ease, text-shadow 0.2s ease, color 0.3s ease; /* For dimming and glow */
+        }
+        .channel-strip p {
+            font-size: 0.8rem; 
+            text-align: center;
+            margin-bottom: 1rem;
+            flex-grow: 1; 
+            color: var(--color-text-secondary);
+            transition: opacity 0.3s ease, text-shadow 0.2s ease, color 0.3s ease; /* For dimming and glow */
+        }
+        .channel-strip .ms-btn {
+            transition: color 0.3s ease, text-shadow 0.2s ease; /* For dimming and glow */
+        }
+
+        /* Text glow effect */
+        /* Text color will be primary, text-shadow will be modulated via JS */
+        .text-glow {
+            /* This class is now primarily a marker; JS will set text-shadow dynamically */
+            /* text-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent-light); */ 
+            color: var(--color-text-primary); /* Ensure text is bright when glowing */
+        }
+        /* Dimmed text effect */
+        .dimmed-text {
+            opacity: 0.4;
+            color: var(--color-text-muted); /* Make color muted when dimmed */
+            text-shadow: none; /* No glow when dimmed */
+        }
+
+
+        /* Mixer Controls */
+        .mixer-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 0.8rem; 
+            padding-top: 0.8rem;
+            border-top: var(--border-width) solid var(--color-border-light);
+            margin-top: 0.8rem;
+        }
+
+        /* Pan Knob */
+        .pan-knob {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-darkest); 
+            border-radius: 50%;
+            border: var(--border-width) solid var(--color-border-medium);
+            position: relative;
+            box-shadow: var(--color-shadow-inner);
+            cursor: grab;
+            transition: background-color 0.15s ease;
+        }
+        .pan-knob:hover {
+            background-color: var(--color-accent); /* Dynamic knob background on hover */
+            box-shadow: 0 0 8px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.5); /* Dynamic shadow */
+        }
+        .pan-knob-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 12px; 
+            background-color: var(--color-text-primary);
+            border-radius: 2px;
+            transform-origin: bottom center;
+            transform: translate(-50%, -50%) rotate(0deg); 
+            transition: transform 0.15s ease, background-color 0.15s ease;
+        }
+        .pan-knob:hover .pan-knob-indicator {
+            background-color: var(--color-bg-panel); 
+        }
+        /* Removed .pan-value styles */
+
+        /* Fader */
+        .fader-track {
+            width: 10px;
+            height: 80px; 
+            background-color: var(--color-bg-darkest);
+            border-radius: 5px;
+            border: var(--border-width) solid var(--color-border-medium);
+            position: relative;
+            box-shadow: var(--color-shadow-inner);
+        }
+        .fader-knob {
+            width: 24px;
+            height: 12px;
+            background-color: var(--color-accent); /* Dynamic fader knob */
+            border-radius: 4px;
+            border: var(--border-width) solid var(--color-accent-hover); /* Dynamic fader knob border */
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 50%; 
+            cursor: grab;
+            box-shadow: var(--color-shadow-outer-sm);
+            transition: background-color 0.15s ease;
+        }
+        .fader-knob:hover {
+            background-color: var(--color-accent-hover); /* Dynamic fader knob hover */
+            box-shadow: 0 0 10px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.7); /* Dynamic shadow */
+        }
+        /* Removed .fader-value styles */
+        
+        /* Mute/Solo Buttons */
+        .ms-buttons {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+        .ms-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background-color: var(--color-bg-secondary);
+            border: var(--border-width) solid var(--color-border-medium);
+            color: var(--color-text-muted);
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: var(--font-mono);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: var(--color-shadow-outer-sm);
+            position: relative; 
+        }
+        .ms-btn:hover {
+            background-color: var(--color-bg-active);
+            transform: translateY(-1px);
+        }
+        .ms-btn.mute.active {
+            background-color: #FF4D4D; 
+            color: var(--color-bg-panel);
+            box-shadow: var(--color-shadow-inner);
+            transform: none;
+        }
+        .ms-btn.solo.active {
+            background-color: #FFEB3B; 
+            color: var(--color-bg-darkest);
+            box-shadow: var(--color-shadow-inner);
+            transform: none;
+        }
+
+        /* Tooltip Styling */
+        [data-tooltip]::before,
+        [data-tooltip]::after {
+            --tooltip-bg: var(--color-bg-darkest);
+            --tooltip-text-color: var(--color-text-primary);
+            --tooltip-padding: 0.4rem 0.7rem;
+            --tooltip-font-size: 0.75rem;
+            --tooltip-offset: 10px; 
+
+            position: absolute;
+            z-index: 60; 
+            pointer-events: none; 
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Tooltip content */
+        [data-tooltip]::before {
+            content: attr(data-tooltip);
+            background-color: var(--tooltip-bg);
+            color: var(--tooltip-text-color);
+            padding: var(--tooltip-padding);
+            border-radius: 6px;
+            font-size: var(--tooltip-font-size);
+            font-family: var(--font-mono);
+            white-space: nowrap; 
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            box-shadow: var(--color-shadow-outer-sm);
+            border: var(--border-width) solid var(--color-border-medium);
+        }
+
+        /* Tooltip arrow */
+        [data-tooltip]::after {
+            content: '';
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--tooltip-bg) transparent transparent transparent;
+        }
+
+        /* Tooltip position - top center for mixer controls */
+        .pan-knob[data-tooltip]::before,
+        .fader-knob[data-tooltip]::before,
+        .ms-btn[data-tooltip]::before {
+            bottom: calc(100% + var(--tooltip-offset));
+            left: 50%;
+            transform: translateX(-50%) translateY(5px); 
+        }
+        .pan-knob[data-tooltip]::after,
+        .fader-knob[data-tooltip]::after,
+        .ms-btn[data-tooltip]::after {
+            bottom: calc(100% + var(--tooltip-offset) - 5px); 
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            border-color: var(--tooltip-bg) transparent transparent transparent;
+        }
+
+        /* Tooltip on hover */
+        [data-tooltip]:hover::before,
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0); 
+        }
+
+
+        /* Skill Tag Styling (Like small indicators) */
+        .skill-tag {
+            font-family: var(--font-mono);
+            background-color: var(--color-accent-light); /* Dynamic tag background */
+            color: var(--color-accent); /* Dynamic tag text color */
+            padding: 0.3rem 0.8rem; 
+            border-radius: 4px; 
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            border: var(--border-width) solid var(--color-accent); /* Dynamic tag border */
+        }
+        .skill-tag:hover {
+            background-color: var(--color-accent); /* Dynamic tag hover background */
+            color: var(--color-bg-panel); 
+            box-shadow: var(--color-shadow-outer-sm);
+        }
+
+        /* Custom Input Field Styling (More like DAW text fields) */
+        .input-custom, textarea.input-custom {
+            background-color: var(--color-bg-darkest); 
+            border: var(--border-width) solid var(--color-border-medium);
+            color: var(--color-text-primary);
+            border-radius: 6px; 
+            padding: 0.8rem 1rem;
+            transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            font-size: 0.9rem;
+            box-shadow: var(--color-shadow-inner); 
+            font-family: var(--font-mono); 
+        }
+        .input-custom::placeholder, textarea.input-custom::placeholder { 
+            color: var(--color-text-muted); 
+            opacity: 0.7; 
+        }
+        .input-custom:focus, textarea.input-custom:focus {
+            outline: none;
+            border-color: var(--color-accent); /* Dynamic focus border */
+            background-color: var(--color-bg-secondary); 
+            box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb-r), var(--color-accent-rgb-g), var(--color-accent-rgb-b), 0.25); /* Dynamic focus shadow */
+        }
+        textarea.input-custom { 
+            min-height: 120px; 
+            resize: vertical; 
+        }
+
+        /* Footer Styling (Bottom Bar/Status Bar) */
+        #main-footer {
+            border-top: var(--border-width) solid var(--color-border-medium);
+            background-color: var(--color-bg-panel); 
+            padding-top: 1.2rem; 
+            padding-bottom: 1.2rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            font-family: var(--font-mono); 
+        }
+        #main-footer a:hover i {
+            transform: scale(1.15);
+            color: var(--color-accent); /* Dynamic footer icon hover */
+        }
+        #main-footer a i { 
+            transition: transform 0.2s ease, color 0.2s ease; 
+            font-size: 1.1rem; 
+            color: var(--color-text-muted);
+        }
+        #main-footer p {
+            font-size: 0.75rem; 
+            line-height: 1.6;
+            color: var(--color-text-muted);
+            letter-spacing: 0.01em;
+        }
+        #main-footer .footer-highlight { 
+            color: var(--color-accent); /* Dynamic footer highlight */
+            font-weight: 500;
+        }
+
+        /* GSAP Animation Helper Classes (Initial States) */
+        /* IMPORTANT: Ensure elements are initially visible for layout, then let GSAP handle hide/show for animations */
+        .g-fade-in, 
+        .g-fade-in-up, 
+        .g-fade-in-down, 
+        .g-fade-in-left, 
+        .g-fade-in-right, 
+        .g-scale-in {
+            opacity: 0; 
+            /* Removed visibility: hidden here to avoid global hiding issues */
+            will-change: transform, opacity; 
+        }
+        /* The staggered children now rely on GSAP's `fromTo` to set initial `visibility: 'hidden'` */
+        /* This rule below is for components *within* g-stagger-children that are NOT explicitly animated by their own class */
+        .g-stagger-children > *:not(.g-fade-in):not(.g-fade-in-up):not(.g-fade-in-down):not(.g-fade-in-left):not(.g-fade-in-right):not(.g-scale-in) {
+            opacity: 0;
+            visibility: hidden; /* Only apply to children without specific animation classes */
+        }
+
+
+        /* Back to Top Button Styling (Like a small control button) */
+        #back-to-top {
+            background-color: var(--color-bg-secondary); 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: var(--color-text-primary); 
+            width: 2.5rem; 
+            height: 2.5rem; 
+            border-radius: 50%;
+            border: var(--border-width) solid var(--color-border-medium);
+            box-shadow: var(--color-shadow-outer-sm);
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        }
+        #back-to-top:hover {
+            background-color: var(--color-accent); /* Dynamic back to top hover */
+            color: var(--color-bg-panel); 
+            transform: scale(1.05) translateY(-2px); 
+        }
+        #back-to-top i { 
+            font-size: 0.9rem; 
+        }
+
+        /* Ensure text selection color is pleasant on dark background */
+        ::selection {
+            background-color: var(--color-accent); /* Dynamic text selection */
+            color: var(--color-bg-panel); 
+        }
+        ::-moz-selection { /* Firefox */
+            background-color: var(--color-accent); /* Dynamic text selection */
+            color: var(--color-bg-panel);
+        }
+
+        /* Tailwind utility overrides for consistency */
+        .text-color-text-primary { color: var(--color-text-primary); }
+        .text-color-text-secondary { color: var(--color-text-secondary); }
+        .text-color-accent { color: var(--color-accent); } /* This class will now reflect the dynamic accent */
+        .text-color-text-muted { color: var(--color-text-muted); }
+
+        /* Fallback for browsers that don't support backdrop-filter well */
+        @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+            .header-scrolled, #mobile-menu, #back-to-top {
+                background-color: var(--color-bg-panel); 
+            }
+            #back-to-top:hover {
+                background-color: var(--color-accent);
+            }
+        }
+
+        /* Responsive iframe container for YouTube embeds */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px; 
+            margin-bottom: 0.8rem; 
+            box-shadow: var(--color-shadow-inner);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        /* Custom image container for portfolio thumbnail */
+        .thumbnail-container {
+            width: 100%;
+            padding-bottom: 56.25%; 
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            box-shadow: var(--color-shadow-inner);
+            background-color: var(--color-bg-darkest); 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .thumbnail-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+        .thumbnail-container .placeholder-icon {
+            font-size: 3rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Ensure title and subtitle are static and flow naturally */
+        #services .section-title,
+        #services .section-subtitle {
+            position: static;
+            top: auto;
+            z-index: auto;
+            background-color: transparent;
+            padding-top: 0;
+            padding-bottom: 0;
+            box-shadow: none;
+            width: auto;
+            text-align: center;
+            left: auto;
+            right: auto;
+        }
+        #services .section-title {
+            margin-bottom: 1rem; /* Restore original margin */
+        }
+        #services .section-subtitle {
+            margin-top: 0;
+            margin-bottom: 3.5rem; /* Restore original margin */
+        }
+
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Main Header (Fixed Top Control Bar - DAW Transport) -->
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50">
+        <div class="container mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-full">
+            <a href="#hero" class="site-title g-fade-in-down" style="animation-delay: 1.2s;">Anjohn Ajiesh</a>
+            
+            <!-- Desktop Navigation (DAW Menu Buttons) -->
+            <nav class="hidden md:flex items-center space-x-3 lg:space-x-5">
+                <a href="#hero" class="nav-link g-fade-in-down" style="animation-delay: 1.3s;">Session</a>
+                <a href="#about" class="nav-link g-fade-in-down" style="animation-delay: 1.4s;">About</a>
+                <a href="#services" class="nav-link g-fade-in-down" style="animation-delay: 1.5s;">Mixer</a>
+                <a href="#portfolio" class="nav-link g-fade-in-down" style="animation-delay: 1.6s;">Projects</a>
+                <!-- Only one "Connect" button, the primary one -->
+                <a href="#contact" class="btn-custom btn-custom-primary g-fade-in-down" style="animation-delay: 1.7s;">Connect</a>
+            </nav>
+
+            <!-- Transport Controls (Play, Stop, Record) -->
+            <div class="transport-controls hidden md:flex">
+                <span id="bpm-display">BPM: 120</span>
+                <button id="play-btn" class="transport-btn play" aria-label="Play">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="stop-btn" class="transport-btn stop" aria-label="Stop">
+                    <i class="fas fa-stop"></i>
+                </button>
+                <button id="record-btn" class="transport-btn record" aria-label="Record">
+                    <i class="fas fa-circle"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Navigation Toggle (Hamburger Icon) -->
+            <button id="mobile-nav-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden flex flex-col justify-center items-center w-10 h-10 relative z-50 focus:outline-none focus:ring-2 focus:ring-color-accent rounded">
+                <span class="hamburger-line hamburger-top w-6 h-0.5 rounded-full mb-1.5"></span>
+                <span class="hamburger-line hamburger-middle w-6 h-0.5 rounded-full mb-1.5"></span>
+                <span class="hamburger-line hamburger-bottom w-6 h-0.5 rounded-full"></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="md:hidden fixed top-0 left-0 w-full h-screen z-40 flex flex-col items-center justify-center pt-20 pb-8
+                                     opacity-0 invisible -translate-y-5 transform">
+            <nav class="flex flex-col items-center space-y-5 w-full px-4">
+                <a href="#hero" class="mobile-nav-link">Session</a>
+                <a href="#about" class="mobile-nav-link">About</a>
+                <a href="#services" class="mobile-nav-link">Mixer</a>
+                <a href="#portfolio" class="mobile-nav-link">Projects</a>
+                <a href="#contact" class="mobile-nav-link btn-custom-primary">Connect</a>
+            </nav>
+            <!-- Social icons for mobile menu -->
+            <div class="mt-8 flex space-x-5">
+                <a href="https://soundcloud.com/amediuz" target="_blank" aria-label="SoundCloud"><i class="fab fa-soundcloud text-2xl text-color-text-muted hover:text-color-accent transition-colors"></i></a>
+                <a href="https://www.youtube.com/@amediuz1192" target="_blank" aria-label="YouTube"><i class="fab fa-youtube text-2xl text-color-text-muted hover:text-color-accent transition-colors"></i></a>
+                <a href="https://www.instagram.com/itz_amediuz/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram text-2xl text-color-text-muted hover:text-color-accent transition-colors"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section (Main Arrangement/Session View Panel) -->
+        <section id="hero" class="relative flex items-center justify-center text-center px-4 sm:px-6 lg:px-8">
+            <div class="max-w-5xl mx-auto z-10 w-full">
+                <div class="hero-content-wrapper flex flex-col items-center justify-center">
+                    <h1 class="hero-title mb-2 g-fade-in-up">
+                        Anjohn Ajiesh
+                    </h1>
+                    <!-- Added id="alias-text" for specific animation targeting -->
+                    <p id="alias-text" class="mb-4 g-fade-in-up" style="animation-delay: 0.4s;">
+                        aka Amediuz
+                    </p>
+                    <p class="hero-tagline mb-4 g-fade-in-up" style="animation-delay: 0.5s;">
+                        Multi-instrumentalist | Music Producer | Sound Designer
+                    </p>
+                    <div id="animated-quote" class="text-xl md:text-2xl font-semibold mt-4 mb-10 g-fade-in-up w-full max-w-2xl">
+                        <!-- Dynamic quotes will be inserted here by JavaScript -->
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 g-fade-in-up">
+                        <a href="#contact" class="btn-custom btn-custom-primary">New Project</a>
+                        <a href="#portfolio" class="btn-custom btn-custom-secondary">Browse Sessions</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section (Details Panel/Instrument Rack) -->
+        <section id="about" class="section-border-t px-4 sm:px-6 lg:px-8 text-center">
+            <div class="container mx-auto max-w-7xl content-panel">
+                <h2 class="section-title g-fade-in-up">About Me</h2>
+                <p class="section-subtitle g-fade-in-up">
+                    Passionate about sound and dedicated to the craft, I bring a unique blend of instrumental proficiency and production expertise to every project.
+                </p>
+
+                <div class="flex flex-col md:flex-row items-center md:items-start justify-center gap-10 md:gap-16 mt-12 text-left">
+                    <!-- Image Column (Instrument Visual) -->
+                    <div class="md:w-1/2 w-full g-fade-in-left">
+                        <div class="w-full h-64 md:h-96 rounded-lg overflow-hidden border border-color-border-medium shadow-md">
+                            <!-- Updated image URL here -->
+                            <img src="https://raw.githubusercontent.com/Amediuz/Amediuz.github.io/main/IMG_0558.jpg" 
+                                 alt="Anjohn Ajiesh Profile" 
+                                 class="object-cover object-center w-full h-full transition-transform duration-300 hover:scale-105"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/600x400/F0E6D0/B58744?text=Image+Not+Found';">
+                        </div>
+                        <!-- Removed the following paragraph as requested -->
+                        <!-- <p class="text-xs text-color-text-muted mt-2 text-center md:text-left">
+                            *This is your photo, loaded from GitHub.
+                        </p> -->
+                    </div>
+                    <!-- Text Content Column -->
+                    <div class="md:w-1/2 g-fade-in-right">
+                        <h3 class="text-2xl font-bold text-color-text-primary mb-4">My Journey in Music</h3>
+                        <p class="text-lg text-color-text-secondary leading-relaxed mb-6">
+                            From a young age, I've been captivated by the power of music. My journey began with learning various instruments, which shaped my understanding of melody, harmony, and rhythm. This foundation naturally led me into the world of music production, where I discovered the thrill of transforming raw ideas into polished tracks.
+                        </p>
+                        <p class="text-lg text-color-text-secondary leading-relaxed">
+                            Based in Thrissur, Kerala, I continuously explore new sounds and techniques, committed to delivering high-quality, impactful music. Whether it's composing, arranging, recording, mixing, or mastering, my goal is to help artists achieve their sonic vision.
+                        </p>
+                        <h3 class="text-2xl font-bold text-color-text-primary mt-8 mb-4">Skills & Tools</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-tag">Multi-instrumentalist</span>
+                            <span class="skill-tag">Music Production</span>
+                            <span class="skill-tag">Audio Mixing</span>
+                            <span class="skill-tag">Audio Mastering</span>
+                            <span class="skill-tag">Composition</span>
+                            <span class="skill-tag">Arrangement</span>
+                            <span class="skill-tag">DAW (Ableton Live)</span>
+                            <span class="skill-tag">DAW (Reaper)</span>
+                            <span class="skill-tag">DAW (Logic Pro)</span>
+                            <span class="skill-tag">Sound Design</span>
+                            <span class="skill-tag">Live Performance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section (Mixing Window) -->
+        <section id="services" class="section-border-t px-4 sm:px-6 lg:px-8 text-center">
+            <div class="container mx-auto max-w-7xl content-panel">
+                <h2 class="section-title g-fade-in-up">Mixing Console</h2>
+                <p class="section-subtitle g-fade-in-up">
+                    My services are like channels in a mixer – each expertly crafted to deliver a pristine sound.
+                </p>
+
+                <!-- NEW: Wrapper for horizontal scrolling of channel strips -->
+                <div class="mixer-scroll-wrapper mt-12">
+                    <div class="channel-strip-container g-stagger-children">
+                        <!-- Service/Channel Strip 1: Music Production -->
+                        <div class="channel-strip" data-channel-id="production" data-fader-percentage="20" data-pan-rotation="0">
+                            <div class="icon-container"><i class="fas fa-headphones-alt"></i></div>
+                            <h3>Full Production</h3>
+                            <p>From initial concept to final master, comprehensive production services to bring your ideas to life.</p>
+                            <div class="mixer-controls">
+                                <div class="fader-track">
+                                    <div class="fader-knob" data-tooltip="Volume Fader" style="bottom: 20%;"></div>
+                                </div>
+                                <div class="pan-knob" data-tooltip="Pan Control">
+                                    <div class="pan-knob-indicator" style="transform: translate(-50%, -50%) rotate(0deg);"></div>
+                                </div>
+                                <div class="ms-buttons">
+                                    <button class="ms-btn mute" data-tooltip="Mute Channel">M</button>
+                                    <button class="ms-btn solo" data-tooltip="Solo Channel">S</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service/Channel Strip 2: Mixing & Mastering -->
+                        <div class="channel-strip" data-channel-id="mix-master" data-fader-percentage="20" data-pan-rotation="0">
+                            <div class="icon-container"><i class="fas fa-sliders-h"></i></div>
+                            <h3>Mix & Master</h3>
+                            <p>Transform raw tracks into professional, radio-ready productions with clarity, impact, and optimization.</p>
+                            <div class="mixer-controls">
+                                <div class="fader-track">
+                                    <div class="fader-knob" data-tooltip="Volume Fader" style="bottom: 20%;"></div>
+                                </div>
+                                <div class="pan-knob" data-tooltip="Pan Control">
+                                    <div class="pan-knob-indicator" style="transform: translate(-50%, -50%) rotate(0deg);"></div>
+                                </div>
+                                <div class="ms-buttons">
+                                    <button class="ms-btn mute" data-tooltip="Mute Channel">M</button>
+                                    <button class="ms-btn solo" data-tooltip="Solo Channel">S</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service/Channel Strip 3: Composition & Arrangement -->
+                        <div class="channel-strip" data-channel-id="composition" data-fader-percentage="20" data-pan-rotation="0">
+                            <div class="icon-container"><i class="fas fa-music"></i></div>
+                            <h3>Composition</h3>
+                            <p>Original music for films, games, commercials, or developing melodic ideas into full instrumental pieces.</p>
+                            <div class="mixer-controls">
+                                <div class="fader-track">
+                                    <div class="fader-knob" data-tooltip="Volume Fader" style="bottom: 20%;"></div>
+                                </div>
+                                <div class="pan-knob" data-tooltip="Pan Control">
+                                    <div class="pan-knob-indicator" style="transform: translate(-50%, -50%) rotate(0deg);"></div>
+                                </div>
+                                <div class="ms-buttons">
+                                    <button class="ms-btn mute" data-tooltip="Mute Channel">M</button>
+                                    <button class="ms-btn solo" data-tooltip="Solo Channel">S</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service/Channel Strip 4: Multi-Instrumental Performance -->
+                        <div class="channel-strip" data-channel-id="live-instruments" data-fader-percentage="20" data-pan-rotation="0">
+                            <div class="icon-container"><i class="fas fa-guitar"></i></div>
+                            <h3>Live Instruments</h3>
+                            <p>Adding live instrumentation (guitars, keyboards, percussion) to your recordings for an organic feel.</p>
+                            <div class="mixer-controls">
+                                <div class="fader-track">
+                                    <div class="fader-knob" data-tooltip="Volume Fader" style="bottom: 20%;"></div>
+                                </div>
+                                <div class="pan-knob" data-tooltip="Pan Control">
+                                    <div class="pan-knob-indicator" style="transform: translate(-50%, -50%) rotate(0deg);"></div>
+                                </div>
+                                <div class="ms-buttons">
+                                    <button class="ms-btn mute" data-tooltip="Mute Channel">M</button>
+                                    <button class="ms-btn solo" data-tooltip="Solo Channel">S</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service/Channel Strip 5: Vocal Production & Tuning -->
+                        <div class="channel-strip" data-channel-id="vocal-production" data-fader-percentage="20" data-pan-rotation="0">
+                            <div class="icon-container"><i class="fas fa-microphone"></i></div>
+                            <h3>Vocal Production</h3>
+                            <p>Elevate vocal performances with expert guidance, precise tuning, and professional processing.</p>
+                            <div class="mixer-controls">
+                                <div class="fader-track">
+                                    <div class="fader-knob" data-tooltip="Volume Fader" style="bottom: 20%;"></div>
+                                </div>
+                                <div class="pan-knob" data-tooltip="Pan Control">
+                                    <div class="pan-knob-indicator" style="transform: translate(-50%, -50%) rotate(0deg);"></div>
+                                </div>
+                                <div class="ms-buttons">
+                                    <button class="ms-btn mute" data-tooltip="Mute Channel">M</button>
+                                    <button class="ms-btn solo" data-tooltip="Solo Channel">S</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service/Channel Strip 6: Sound Design -->
+                        <div class="channel-strip" data-channel-id="sound-design" data-fader-percentage="20" data-pan-rotation="0">
+                            <div class="icon-container"><i class="fas fa-volume-up"></i></div>
+                            <h3>Sound Design</h3>
+                            <p>Craft custom sound effects and atmospheric textures for various media, enhancing immersive experiences.</p>
+                            <div class="mixer-controls">
+                                <div class="fader-track">
+                                    <div class="fader-knob" data-tooltip="Volume Fader" style="bottom: 20%;"></div>
+                                </div>
+                                <div class="pan-knob" data-tooltip="Pan Control">
+                                    <div class="pan-knob-indicator" style="transform: translate(-50%, -50%) rotate(0deg);"></div>
+                                </div>
+                                <div class="ms-buttons">
+                                    <button class="ms-btn mute" data-tooltip="Mute Channel">M</button>
+                                    <button class="ms-btn solo" data-tooltip="Solo Channel">S</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Section (Project Tracks/Clips - PS4 Style) -->
+        <section id="portfolio" class="section-border-t px-4 sm:px-6 lg:px-8 text-center">
+            <div class="container mx-auto max-w-7xl content-panel">
+                <h2 class="section-title g-fade-in-up">My Projects</h2>
+                <p class="section-subtitle g-fade-in-up">
+                    Explore a selection of my recent works, showcasing my versatility in music production, composition, and instrumental performance.
+                    Each project is like a session you can preview!
+                </p>
+
+                <div class="portfolio-carousel-wrapper mt-12">
+    <div id="portfolio-carousel" class="portfolio-carousel-container flex overflow-x-auto space-x-6 pb-6">
+        <!-- Dynamic Cards Will Load Here via Google Sheets API -->
+    </div>
+</div>
+                    <!-- Carousel Navigation Buttons -->
+                    <button id="carousel-left-btn" class="carousel-nav-btn left">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button id="carousel-right-btn" class="carousel-nav-btn right">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <!-- Carousel Dots Container -->
+                <div id="carousel-dots-container" class="carousel-indicators">
+                    <!-- Dots will be dynamically added here by JavaScript -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Call to Action / Approach Section (Workflow Signal Chain) -->
+        <section id="approach" class="section-border-t px-4 sm:px-6 lg:px-8 text-center">
+            <div class="container mx-auto max-w-7xl content-panel">
+                <h2 class="section-title g-fade-in-up">My Creative Workflow</h2>
+                <p class="section-subtitle g-fade-in-up">
+                    My process is designed to be collaborative, efficient, and focused on delivering exceptional results that resonate with your artistic vision.
+                </p>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12 g-stagger-children">
+                    <!-- Approach Card 1 -->
+                    <div class="service-card">
+                        <div class="icon-container"><i class="fas fa-comments"></i></div>
+                        <h3>1. Discovery & Concept</h3>
+                        <p>We start with a detailed discussion to understand your vision, goals, and musical preferences. This phase is crucial for aligning our creative directions.</p>
+                    </div>
+                    <!-- Approach Card 2 - Corrected class name -->
+                    <div class="service-card">
+                        <div class="icon-container"><i class="fas fa-lightbulb"></i></div>
+                        <h3>2. Creation & Iteration</h3>
+                        <p>Based on our concept, I begin the creative process, composing, arranging, and producing. We'll have regular check-ins for feedback and refinements.</p>
+                    </div>
+                    <!-- Approach Card 3 -->
+                    <div class="service-card">
+                        <div class="icon-container"><i class="fas fa-check-circle"></i></div>
+                        <h3>3. Refine & Deliver</h3>
+                        <p>The final stages involve polishing the tracks, performing mixing and mastering, and ensuring the final product exceeds your expectations before delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section (Console/Terminal Panel) -->
+        <section id="contact" class="section-border-t px-4 sm:px-6 lg:px-8 text-center">
+            <div class="container mx-auto max-w-4xl content-panel">
+                <h2 class="section-title g-fade-in-up">Route Signal</h2>
+                <p class="section-subtitle g-fade-in-up">
+                    Send me a message! Have a project in mind? Looking for a collaboration? Or just want to say hello?
+                </p>
+
+                <!-- Updated form to use Formspree -->
+                <form id="contact-form" action="https://formspree.io/f/xblyqzdl" method="POST" class="mt-12 text-left space-y-6 max-w-lg mx-auto g-fade-in-up">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-color-text-secondary mb-2">Source (Your Name)</label>
+                        <input type="text" id="name" name="name" class="input-custom" placeholder="Your Name" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-color-text-secondary mb-2">Return Path (Your Email)</label>
+                        <input type="email" id="email" name="_replyto" class="input-custom" placeholder="you@example.com" required>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-color-text-secondary mb-2">Message (Signal Input)</label>
+                        <textarea id="message" name="message" class="input-custom" rows="5" placeholder="Describe your project parameters or query..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-custom btn-custom-primary w-full sm:w-auto mt-4">Transmit Signal</button>
+                    <!-- Form status message for feedback after submission -->
+                    <p id="form-status" class="text-center text-color-text-highlight font-mono mt-4"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer (Bottom Control Bar/Status Bar) -->
+    <footer id="main-footer">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-6">
+            <div class="flex space-x-5">
+                <a href="https://soundcloud.com/amediuz" target="_blank" aria-label="SoundCloud"><i class="fab fa-soundcloud"></i></a>
+                <a href="https://www.youtube.com/@amediuz1192" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.instagram.com/itz_amediuz/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-color-text-muted">
+                &copy; <span id="current-year"></span> <span class="footer-highlight">Anjohn Ajiesh</span>. All Rights Reserved. <span class="text-color-text-highlight ml-2">STATUS: ONLINE</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 z-40 flex items-center justify-center opacity-0 invisible transform translate-y-4">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- GSAP Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
+    <script>
+        // script.js (Modified by AI for DAW theme and typewriter quotes and dynamic accent color)
+        // Global variables for YouTube Player API and GSAP timelines
+        let ytPlayers = {}; 
+        // meterTimelines will now store an array of individual tweens for each cardId
+        let meterTimelines = {}; 
+
+        // --- Portfolio Card Meter Animation (Revised for Continuous Random Movement) ---
+        /**
+         * Animates or sets inactive the portfolio meters for a given card.
+         * @param {NodeListOf<HTMLElement>} meterBars The meter bar elements for the card.
+         * @param {boolean} isActive Whether the meters should be actively animating (video playing).
+         * @param {string} cardId The ID of the portfolio card.
+         */
+        function animatePortfolioMeter(meterBars, isActive = false, cardId) {
+            if (!meterBars || meterBars.length === 0) {
+                console.warn(`[animatePortfolioMeter] No meter bars found for cardId: ${cardId}. Returning.`);
+                return; 
+            }
+
+            // Kill any existing animations for EACH bar of this card if they exist
+            if (meterTimelines[cardId] && meterTimelines[cardId].length > 0) {
+                console.log(`[animatePortfolioMeter] Killing existing animations for ${cardId}`);
+                meterTimelines[cardId].forEach(tween => {
+                    tween.kill(); // Stop and remove previous animation
+                });
+                meterTimelines[cardId] = []; // Clear the array
+            } else if (!meterTimelines[cardId]) {
+                meterTimelines[cardId] = []; // Initialize array for this card if not already
+            }
+
+            const animationDuration = 0.4; // Shorter, snappier duration for active meters
+            const inactiveHeight = 5; // Static low height when not playing
+
+            if (!isActive) {
+                console.log(`[animatePortfolioMeter] Setting meters for ${cardId} to inactive state.`);
+                // Set bars to static low height immediately if not active
+                gsap.set(meterBars, { height: `${inactiveHeight}%` });
+                // Remove peak classes
+                meterBars.forEach(bar => bar.classList.remove('peak-yellow', 'peak-red'));
+                return; 
+            }
+
+            console.log(`[animatePortfolioMeter] Creating new active animations for ${cardId}`);
+            meterBars.forEach((bar, index) => {
+                const baseTargetHeight = parseFloat(bar.dataset.meterTarget) || 70; // Use data-meter-target as a base
+                const minHeight = baseTargetHeight * 0.4; // Minimum active height, relative to target
+                const maxHeight = baseTargetHeight * 1.1; // Max active height, slightly above target
+
+                // Create an individual tween for each bar, allowing random values on each repeat
+                const barTween = gsap.to(bar, {
+                    height: () => `${gsap.utils.random(minHeight, maxHeight)}%`, // Function to get a new random value on each repeat
+                    duration: () => gsap.utils.random(animationDuration * 0.8, animationDuration * 1.2), // Function for random duration
+                    ease: "power1.inOut",
+                    repeat: -1, // Repeat indefinitely
+                    yoyo: true, // Go back and forth
+                    repeatRefresh: true, // Crucial: Recalculate 'height' and 'duration' on each repeat
+                    paused: false, // Ensure it starts playing immediately
+                    onUpdate: () => {
+                        const currentHeight = parseFloat(bar.style.height);
+                        // console.log(`[MeterAnimation - ${cardId}] Bar ${index}: ${currentHeight.toFixed(2)}%`); // Fine-grained debugging
+                        if (currentHeight > 85) { // Higher threshold for red peak
+                            bar.classList.add('peak-red');
+                            bar.classList.remove('peak-yellow');
+                        } else if (currentHeight > 65) { // Higher threshold for yellow peak
+                            bar.classList.add('peak-yellow');
+                            bar.classList.remove('peak-red');
+                        } else {
+                            bar.classList.remove('peak-yellow', 'peak-red');
+                        }
+                    }
+                });
+                meterTimelines[cardId].push(barTween); // Store the individual tween for management
+            });
+            console.log(`[animatePortfolioMeter] New active animations created and stored for ${cardId}. Total tweens: ${meterTimelines[cardId].length}`);
+        }
+
+        // Function to pause all meter animations except the one for the currently playing video
+        function pauseAllOtherPortfolioMeters(playingCardId) {
+            for (const id in meterTimelines) {
+                if (id !== playingCardId && meterTimelines[id] && meterTimelines[id].length > 0) {
+                    console.log(`[MeterControl] Pausing meter animations for ${id} (not the playing one).`);
+                    meterTimelines[id].forEach(tween => {
+                        tween.pause(); // Pause each individual tween
+                        // Explicitly set height to inactive state and remove peak classes
+                        gsap.set(tween.targets(), { height: '5%' });
+                        tween.targets().forEach(bar => bar.classList.remove('peak-yellow', 'peak-red'));
+                    });
+                }
+            }
+        }
+
+        // Load the IFrame Player API code asynchronously.
+        // This function will be called by the YouTube API once it's loaded.
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // This function creates an <iframe> (and YouTube player)
+        // for each video after the API code downloads.
+        window.onYouTubeIframeAPIReady = function() {
+            document.querySelectorAll('.portfolio-card').forEach((card, index) => {
+                const iframe = card.querySelector('iframe');
+                if (iframe) {
+                    const playerId = `youtube-player-${index}`;
+                    iframe.id = playerId; // Ensure iframe has a unique ID
+                    card.dataset.cardId = `card-${index}`; // Assign a card ID for meter tracking
+                    ytPlayers[playerId] = new YT.Player(playerId, {
+                        events: {
+                            'onStateChange': (event) => onPlayerStateChange(event, card)
+                        }
+                    });
+                }
+            });
+        };
+
+        // Function to handle YouTube player state changes
+        function onPlayerStateChange(event, cardElement) {
+            const meterBars = cardElement.querySelectorAll('.meter-bar');
+            const cardId = cardElement.dataset.cardId; 
+            if (!cardId) {
+                console.warn("Card element missing data-card-id:", cardElement);
+                return;
+            }
+
+            console.log(`[PlayerStateChange] Player state changed for ${cardId}: ${event.data}`);
+
+            if (event.data === YT.PlayerState.PLAYING) {
+                console.log(`[PlayerStateChange] PLAYING: Starting/Resuming meter animation for ${cardId}`);
+                animatePortfolioMeter(meterBars, true, cardId); // Pass cardId to animate function
+                pauseAllOtherPortfolioMeters(cardId);
+            } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                console.log(`[PlayerStateChange] PAUSED/ENDED: Pausing meter animation for ${cardId}`);
+                animatePortfolioMeter(meterBars, false, cardId); // Pass cardId to animate function to set inactive
+            }
+            // Other states (buffering, unstarted, cued) do not trigger meter animation
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Register GSAP plugins
+            gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+            // DOM Elements
+            const mainHeaderElement = document.getElementById('main-header');
+            const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const allNavLinks = document.querySelectorAll('#main-header nav a.nav-link, #mobile-menu nav a.mobile-nav-link');
+            const backToTopButton = document.getElementById('back-to-top');
+            const sections = document.querySelectorAll('main section[id]');
+            const contactForm = document.getElementById('contact-form');
+            const formStatus = document.getElementById('form-status');
+            const currentYearEl = document.getElementById('current-year');
+            const animatedQuoteEl = document.getElementById('animated-quote'); 
+            const aliasTextEl = document.getElementById('alias-text'); // Get the alias text element
+
+            // Transport Controls (No direct meter influence here, purely visual)
+            const playBtn = document.getElementById('play-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const recordBtn = document.getElementById('record-btn');
+            const bpmDisplay = document.getElementById('bpm-display');
+
+            // Themes definition
+            // Each theme defines the accent colors and the BPM display color for that state
+            const themes = {
+                stop: {
+                    accent: '#B58744', // Gold
+                    accentLight: 'rgba(181, 135, 68, 0.2)', // Light gold with alpha
+                    accentHover: '#C69D59', // Brighter gold for hover
+                    accentRgb: '181, 135, 68', // RGB values for shadow rgba
+                    bpmColor: '#00A3CC' // Original highlight blue for stopped
+                },
+                play: {
+                    accent: '#4CAF50', // Green
+                    accentLight: 'rgba(76, 175, 80, 0.2)', // Light green with alpha
+                    accentHover: '#6BCB6F', // Brighter green for hover
+                    accentRgb: '76, 175, 80', // RGB values for shadow rgba
+                    bpmColor: '#4CAF50' // Bright green for playing
+                },
+                record: {
+                    accent: '#FF4D4D', // Red
+                    accentLight: 'rgba(255, 77, 77, 0.2)', // Light red with alpha
+                    accentHover: '#FF6666', // Brighter red for hover
+                    accentRgb: '255, 77, 77', // RGB values for shadow rgba
+                    bpmColor: '#FF4D4D' // Bright red for recording
+                }
+            };
+
+            // Function to apply a given theme
+            function applyTheme(themeName) {
+                const theme = themes[themeName];
+                if (!theme) {
+                    console.error("Theme not found:", themeName);
+                    return;
+                }
+
+                const root = document.documentElement;
+                const accentRgbParts = theme.accentRgb.split(',').map(part => part.trim()); // Keep as string parts
+
+                // GSAP for smooth color transition for accent and its derivatives
+                gsap.to(root, {
+                    duration: 0.3,
+                    ease: "power2.inOut",
+                    '--color-accent': theme.accent,
+                    '--color-accent-light': theme.accentLight,
+                    '--color-accent-hover': theme.accentHover
+                });
+
+                // Set RGB parts directly for rgba() usage, without GSAP animation on these specific vars
+                root.style.setProperty('--color-accent-rgb-r', accentRgbParts[0]);
+                root.style.setProperty('--color-accent-rgb-g', accentRgbParts[1]);
+                root.style.setProperty('--color-accent-rgb-b', accentRgbParts[2]);
+
+                // Update BPM display color and animated quote color with GSAP
+                if (bpmDisplay) {
+                    gsap.to(bpmDisplay, { duration: 0.1, color: theme.bpmColor, ease: "power1.out" });
+                }
+                if (animatedQuoteEl) {
+                    gsap.to(animatedQuoteEl, { duration: 0.3, color: theme.accent, ease: "power2.inOut" });
+                }
+            }
+
+
+            // Quotes about music with authors (reduced to 3)
+            const musicQuotes = [
+                { quote: "Music is the language of the spirit. It opens the secret of life bringing peace, abolishing strife.", author: "Kahlil Gibran" },
+                { quote: "Where words fail, music speaks.", author: "Hans Christian Andersen" },
+                { quote: "Without music, life would be a mistake.", author: "Friedrich Nietzsche" }
+            ];
+            let currentQuoteIndex = -1; 
+            const typingSpeed = 0.04; // Seconds per character for typing in
+            const erasingSpeed = 0.02; // Seconds per character for erasing
+
+            // State for transport controls (for visual feedback)
+            let isPlaying = false;
+            let isRecording = false;
+
+            // --- Transport Control Logic ---
+            if (playBtn) {
+                playBtn.addEventListener('click', () => {
+                    isPlaying = !isPlaying;
+                    playBtn.classList.toggle('active', isPlaying);
+                    stopBtn.classList.remove('active'); // Ensure stop is off if play is active
+                    if (isPlaying) {
+                        applyTheme('play'); // Apply Play theme
+                        console.log('Transport: PLAY');
+                    } else {
+                        // If paused (play button toggled off) but not stopped, revert to default accent
+                        // This assumes pressing play again (to pause) should go back to a neutral state
+                        applyTheme('stop'); 
+                        console.log('Transport: PAUSE');
+                    }
+                });
+            }
+
+            if (stopBtn) {
+                stopBtn.addEventListener('click', () => {
+                    isPlaying = false;
+                    isRecording = false; // Stop also stops recording
+                    playBtn.classList.remove('active');
+                    recordBtn.classList.remove('active');
+                    stopBtn.classList.add('active'); // Visually indicate stop
+                    applyTheme('stop'); // Apply Stop theme
+                    console.log('Transport: STOP');
+                    // A small delay to remove active class from stop for a "blink" effect
+                    gsap.to(stopBtn, { duration: 0.3, onComplete: () => stopBtn.classList.remove('active') });
+                });
+            }
+
+            if (recordBtn) {
+                recordBtn.addEventListener('click', () => {
+                    isRecording = !isRecording;
+                    recordBtn.classList.toggle('active', isRecording);
+                    if (isRecording) {
+                        // If record is pressed and not already playing, start play as well (common DAW behavior)
+                        if (!isPlaying) {
+                            isPlaying = true;
+                            playBtn.classList.add('active');
+                        }
+                        applyTheme('record'); // Apply Record theme
+                        console.log('Transport: RECORD');
+                    } else { // !isRecording
+                         // If recording is stopped, but playing is still active, revert to play theme
+                        if (isPlaying) {
+                            applyTheme('play');
+                            console.log('Transport: STOP RECORDING (still playing)');
+                        } else { // Neither recording nor playing, go to stop theme
+                            applyTheme('stop');
+                            console.log('Transport: STOP RECORDING (and stopped playing)');
+                        }
+                    }
+                });
+            }
+
+
+            // --- Header Scroll Effect ---
+            if (mainHeaderElement) {
+                ScrollTrigger.create({
+                    start: "top -80", // Trigger when scrolled 80px past the top
+                    end: 99999, // A large number to keep it active
+                    toggleClass: { className: 'header-scrolled', targets: mainHeaderElement }
+                });
+            }
+
+            // --- Mobile Navigation Toggle ---
+            if (mobileNavToggle && mobileMenu) {
+                mobileNavToggle.addEventListener('click', () => {
+                    const isExpanded = mobileNavToggle.getAttribute('aria-expanded') === 'true';
+                    mobileNavToggle.setAttribute('aria-expanded', String(!isExpanded));
+                    
+                    gsap.to(mobileMenu, {
+                        opacity: isExpanded ? 0 : 1,
+                        y: isExpanded ? -20 : 0,
+                        visibility: isExpanded ? 'hidden' : 'visible',
+                        duration: 0.3,
+                        ease: "power2.out"
+                    });
+                    
+                    // Toggle body scroll lock
+                    document.body.classList.toggle('mobile-menu-open', !isExpanded);
+                });
+            }
+
+            // --- Smooth Scroll for Navigation Links & Mobile Menu Handling ---
+            allNavLinks.forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        const isMobileMenuLinkClicked = this.closest('#mobile-menu') !== null;
+
+                        const performScrollLogic = () => {
+                            // Always get the most current header element reference right before calculation
+                            const currentFixedHeader = document.getElementById('main-header');
+                            let headerOffset = 0;
+
+                            // Determine header offset only if not scrolling to #hero
+                            if (targetId !== '#hero') {
+                                if (currentFixedHeader && currentFixedHeader.offsetHeight > 0) {
+                                    headerOffset = currentFixedHeader.offsetHeight;
+                                    // Adjust for fixed header covering part of the section
+                                } else {
+                                    // Fallback based on viewport width if header height somehow isn't available
+                                    headerOffset = window.innerWidth < 768 ? 64 : 80; 
+                                }
+                            }
+                            
+                            let scrollToPosition = targetElement.offsetTop - headerOffset;
+                            // Ensure scroll position doesn't go negative
+                            scrollToPosition = Math.max(0, scrollToPosition);
+
+                            gsap.to(window, {
+                                duration: 0.8, 
+                                scrollTo: { 
+                                    y: scrollToPosition, 
+                                    autoKill: true // Kills the animation if a new scroll starts
+                                },
+                                ease: "power2.inOut"
+                            });
+                        };
+
+                        // If the click came from a link within the mobile menu AND the menu is currently open
+                        if (isMobileMenuLinkClicked && mobileMenu && mobileMenu.classList.contains('menu-open')) {
+                            // First, close the mobile menu
+                            mobileNavToggle.setAttribute('aria-expanded', 'false');
+                            gsap.to(mobileMenu, {
+                                opacity: 0,
+                                y: -20,
+                                visibility: 'hidden',
+                                duration: 0.3,
+                                ease: "power2.out",
+                                onComplete: () => {
+                                    mobileMenu.classList.remove('menu-open');
+                                    document.body.classList.remove('mobile-menu-open'); // Release body scroll lock
+                                    performScrollLogic(); // Then scroll after menu is hidden
+                                }
+                            });
+                        } else {
+                            performScrollLogic();
+                        }
+                    }
+                });
+            });
+
+            // --- Active Link Highlighting on Scroll ---
+            // This function adds or removes 'active-link' class based on scroll position
+            function updateActiveLink() {
+                if (!sections.length) return; // If no sections, do nothing
+
+                const currentFixedHeader = document.getElementById('main-header');
+                let headerHeightForActiveLink = 0;
+                if (currentFixedHeader) {
+                    headerHeightForActiveLink = currentFixedHeader.offsetHeight;
+                } else {
+                    // Fallback for header height if not immediately available or on smaller screens
+                    headerHeightForActiveLink = window.innerWidth < 768 ? 64 : 80; // Approximate header height
+                }
+                
+                let currentSectionId = 'hero'; // Default to hero section if at the very top
+                // Add an extra offset (e.g., 60px) to consider the section "active" a bit before its very top,
+                // accounting for visual header space and comfortable viewing.
+                const scrollYWithOffset = window.scrollY + headerHeightForActiveLink + 60; 
+
+                sections.forEach(section => {
+                    // Check if the current scroll position is within this section's bounds
+                    if (section.offsetTop <= scrollYWithOffset && (section.offsetTop + section.offsetHeight) > scrollYWithOffset) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+                
+                // Remove 'active-link' from all links and then add it to the current one
+                allNavLinks.forEach(link => {
+                    link.classList.remove('active-link');
+                    // Ensure we don't apply 'active-link' to button-styled links (like 'Connect')
+                    if (link.getAttribute('href') === `#${currentSectionId}` && !link.classList.contains('btn-custom')) {
+                        link.classList.add('active-link');
+                    }
+                });
+            }
+            // Attach the function to the scroll event and call it once on load
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink(); // Call on load to set initial active link
+
+            // --- Back to Top Button ---
+            if (backToTopButton) {
+                // Smooth scroll to the top when button is clicked
+                backToTopButton.addEventListener('click', (e) => { 
+                    e.preventDefault();
+                    gsap.to(window, { 
+                        duration: 1, 
+                        scrollTo: { y: '#hero' }, // Scroll to the hero section
+                        ease: "power2.inOut" 
+                    });
+                });
+
+                // Show/hide button based on scroll position
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 300) { // Show button after scrolling 300px down
+                        // Use classList.remove to ensure visibility and opacity are handled by CSS
+                        backToTopButton.classList.remove('opacity-0', 'invisible');
+                    } else {
+                        backToTopButton.classList.add('opacity-0', 'invisible');
+                    }
+                });
+            }
+
+            // --- GSAP Animations (Initial Page Load and Scroll Triggers) ---
+            // Ensure all elements animated with GSAP start with visibility: hidden and end with visibility: visible
+            gsap.fromTo("#hero h1", 
+                { opacity: 0, y: 50, scale: 0.95, visibility: 'hidden' }, 
+                { opacity: 1, y: 0, scale: 1, duration: 1, ease: "expo.out", delay: 0.3, visibility: 'visible' }
+            );
+            
+            // Animation for "aka Amediuz" text including pulsating glow
+            if (aliasTextEl) {
+                const rootStyle = getComputedStyle(document.documentElement);
+                const accentColorR = parseFloat(rootStyle.getPropertyValue('--color-accent-rgb-r'));
+                const accentColorG = parseFloat(rootStyle.getPropertyValue('--color-accent-rgb-g'));
+                const accentColorB = parseFloat(rootStyle.getPropertyValue('--color-accent-rgb-b'));
+
+                gsap.fromTo(aliasTextEl,
+                    { 
+                        opacity: 0, 
+                        y: 30, 
+                        visibility: 'hidden',
+                        textShadow: `0 0 0px rgba(${accentColorR}, ${accentColorG}, ${accentColorB}, 0)` // Start with no shadow
+                    },
+                    { 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 1.2, 
+                        ease: "power2.out", 
+                        delay: 0.4, 
+                        visibility: 'visible',
+                        textShadow: `0 0 5px rgba(${accentColorR}, ${accentColorG}, ${accentColorB}, 0.5)` // Fade in with initial glow
+                    }
+                );
+
+                // Pulsating glow animation for alias text
+                gsap.to(aliasTextEl, {
+                    textShadow: `0 0 15px rgba(${accentColorR}, ${accentColorG}, ${accentColorB}, 0.8), 0 0 25px rgba(${accentColorR}, ${accentColorG}, ${accentColorB}, 0.4)`,
+                    duration: 1.5, // Duration of one pulse cycle
+                    ease: "power1.inOut",
+                    yoyo: true, // Go back and forth
+                    repeat: -1, // Repeat indefinitely
+                    delay: 1.6 // Start after initial fade-in completes
+                });
+            }
+
+            gsap.fromTo("#hero .hero-tagline", 
+                { opacity: 0, y: 40, visibility: 'hidden' }, 
+                { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", delay: 0.6, visibility: 'visible' }
+            );
+            gsap.fromTo("#hero .btn-custom", 
+                { opacity: 0, y: 30, scale: 0.9, visibility: 'hidden' }, 
+                { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "back.out(1.4)", stagger: 0.15, delay: 0.9, visibility: 'visible' }
+            );
+            gsap.fromTo("#main-header .g-fade-in-down", 
+                {opacity:0, y:-25, visibility: 'hidden'}, 
+                {opacity:1, y:0, duration:0.7, ease:"power2.out", stagger:0.1, delay:1.2, visibility: 'visible'}
+            );
+
+            // Helper function for creating scroll-triggered animations
+            const createScrollAnimation = (selector, fromVars, toVarsBase, stagger = 0.1) => {
+                const elements = gsap.utils.toArray(selector);
+                elements.forEach((el, i) => {
+                    const cssDelay = parseFloat(window.getComputedStyle(el).animationDelay) || 0; 
+                    const animationDelay = cssDelay + (stagger > 0 ? (i * stagger) : 0);
+
+                    // Add visibility 'hidden' to fromVars and 'visible' to toVars
+                    const finalFromVars = { ...fromVars, visibility: 'hidden' };
+                    const finalToVars = { ...toVarsBase, visibility: 'visible' };
+
+                    gsap.fromTo(el, finalFromVars, {
+                        ...finalToVars, 
+                        delay: animationDelay, 
+                        scrollTrigger: {
+                            trigger: el,
+                            start: "top 85%", // Animation starts when element is 85% from top of viewport
+                            end: "bottom 15%", // Animation reverses if element goes above 15% from bottom of viewport
+                            toggleActions: "play none none reverse", // Play on enter, reverse on leave back
+                        }
+                    });
+                });
+            };
+            
+            // Apply scroll animations to various sections and elements
+            createScrollAnimation(".section-title.g-fade-in-up", { opacity: 0, y: 50, scale:0.98 }, { opacity: 1, y: 0, scale:1, duration: 0.8, ease: "expo.out" }, 0);
+            createScrollAnimation(".section-subtitle.g-fade-in-up", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0);
+            
+            // Staggered animations for cards/strips within sections
+            createScrollAnimation(".g-stagger-children > .service-card", { opacity: 0, y: 40, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(1.2)" }, 0.15);
+            createScrollAnimation(".g-stagger-children > .channel-strip", { opacity: 0, y: 40, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: "back.out(1.2)" }, 0.15);
+            
+            // Specific animations for about and contact sections
+            createScrollAnimation("#about .g-fade-in-left", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power2.out" }, 0);
+            createScrollAnimation("#about .g-fade-in-right", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power2.out" }, 0);
+            createScrollAnimation("#contact-form.g-fade-in-up", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0);
+
+            // --- Animated Quotes Logic (Typewriter Effect with Reverse Erase) ---
+            if (animatedQuoteEl) {
+                function animateQuoteCycle() {
+                    currentQuoteIndex = (currentQuoteIndex + 1) % musicQuotes.length;
+                    const { quote, author } = musicQuotes[currentQuoteIndex];
+                    
+                    const tl = gsap.timeline({
+                        onComplete: () => {
+                            animateQuoteCycle(); // Loop the animation
+                        }
+                    });
+
+                    // Ensure quote element is visible before typing starts
+                    tl.set(animatedQuoteEl, { opacity: 1, y: 0, scale: 1, visibility: 'visible' });
+                    animatedQuoteEl.innerHTML = ''; // Clear previous text
+
+                    const quoteChars = quote.split('');
+                    // Type out the quote character by character
+                    for (let i = 0; i < quoteChars.length; i++) {
+                        tl.to({}, { 
+                            duration: typingSpeed,
+                            ease: "none",
+                            onStart: () => {
+                                // Update the text and add the author span (initially hidden)
+                                animatedQuoteEl.innerHTML = quoteChars.slice(0, i + 1).join('') + `<span class="quote-author opacity-0">— ${author}</span>`;
+                            }
+                        }, `+=0.04`); // Use `+=` for relative positioning in timeline
+                    }
+
+                    // Fade in the author after the quote is fully typed
+                    tl.to(animatedQuoteEl.querySelector('.quote-author'), {
+                        opacity: 1,
+                        duration: 0.5, 
+                        ease: "power1.out"
+                    }, `+=${0.5}`); // Add a slight delay before author appears
+
+                    const holdTime = 2.5; // How long to display the full quote
+                    tl.to({}, { duration: holdTime }, `+=${holdTime}`); // Pause the animation
+
+                    const fullTextBeforeErase = quote + (author ? `— ${author}` : ''); 
+                    // Corrected: Ensure fullTextChars is derived from fullTextBeforeErase
+                    const fullTextChars = fullTextBeforeErase.split('');
+                    
+                    // Erase the full text character by character
+                    for (let i = fullTextChars.length; i >= 0; i--) {
+                        tl.to({}, {
+                            duration: erasingSpeed,
+                            ease: "none",
+                            onStart: () => {
+                                const currentText = fullTextChars.slice(0, i).join('');
+                                // Handle author text during erase to keep it with its quote part
+                                if (author && currentText.includes('—')) { 
+                                    const parts = currentText.split('—');
+                                    animatedQuoteEl.innerHTML = parts[0] + `<span class="quote-author opacity-100">— ${parts[1] || ''}</span>`;
+                                } else {
+                                    animatedQuoteEl.innerHTML = currentText;
+                                }
+                                // Ensure opacity is 1 during erase, then set to 0 at the very end.
+                                animatedQuoteEl.style.opacity = 1; 
+                            }
+                        }, `+=${erasingSpeed}`); 
+                    }
+
+                    // Set element to fully transparent and invisible after erasing is complete
+                    tl.set(animatedQuoteEl, { opacity: 0, visibility: 'hidden' }); 
+                }
+                animateQuoteCycle(); // Start the first cycle
+            }
+
+
+            const portfolioCards = document.querySelectorAll('.portfolio-card'); 
+            // Initialize all portfolio meters to a static, non-playing state
+            portfolioCards.forEach(card => {
+                const meterBars = card.querySelectorAll('.meter-bar');
+                // Ensure meter bars exist before trying to animate a portfolio meter
+                if (meterBars.length > 0) { 
+                    if (!card.dataset.cardId) {
+                        card.dataset.cardId = 'card-' + Array.from(portfolioCards).indexOf(card);
+                    }
+                    console.log(`[Initialization] Initializing meter for card: ${card.dataset.cardId}`);
+                    // Call animatePortfolioMeter to set initial inactive state
+                    animatePortfolioMeter(meterBars, false, card.dataset.cardId); 
+                } else {
+                    console.warn(`Portfolio card ${card.dataset.cardId || 'unknown'} has no meter bars. Skipping meter animation initialization.`);
+                }
+            });
+
+            // The 'channel-strip' elements do not contain '.meter-bar' elements.
+            // The mixer channels' interactivity (faders, pans) is handled separately.
+
+            // --- Interactive Mixer Controls Logic ---
+
+            const activeSoloStrips = new Set(); // Stores data-channel-id of currently soloed strips
+
+            /**
+             * Applies or removes dimming and applies glow/pan visuals based on channel strip state.
+             * This function is now responsible for setting the *persistent* visual state based on data attributes.
+             * @param {HTMLElement} strip The channel strip element.
+             */
+            function updateChannelStripVisuals(strip) {
+                const channelId = strip.dataset.channelId;
+                const h3 = strip.querySelector('h3');
+                const p = strip.querySelector('p');
+                const msBtns = strip.querySelectorAll('.ms-btn');
+
+                // Get current fader/pan state from data attributes (default if not set)
+                // We use parseFloat and default to ensure they are numbers.
+                const faderPercentage = parseFloat(strip.dataset.faderPercentage || 50); 
+                const panRotation = parseFloat(strip.dataset.panRotation || 0); 
+
+                // Base colors from CSS variables
+                const rootStyle = getComputedStyle(document.documentElement);
+                const primaryTextColor = rootStyle.getPropertyValue('--color-text-primary').trim();
+                const secondaryTextColor = rootStyle.getPropertyValue('--color-text-secondary').trim();
+                const mutedTextColor = rootStyle.getPropertyValue('--color-text-muted').trim();
+                const accentColorR = parseFloat(rootStyle.getPropertyValue('--color-accent-rgb-r'));
+                const accentColorG = parseFloat(rootStyle.getPropertyValue('--color-accent-rgb-g'));
+                const accentColorB = parseFloat(rootStyle.getPropertyValue('--color-accent-rgb-b'));
+
+                const panLeftR = parseFloat(rootStyle.getPropertyValue('--color-pan-left-accent').split(',')[0]);
+                const panLeftG = parseFloat(rootStyle.getPropertyValue('--color-pan-left-accent').split(',')[1]);
+                const panLeftB = parseFloat(rootStyle.getPropertyValue('--color-pan-left-accent').split(',')[2]);
+
+                const panRightR = parseFloat(rootStyle.getPropertyValue('--color-pan-right-accent').split(',')[0]);
+                const panRightG = parseFloat(rootStyle.getPropertyValue('--color-pan-right-accent').split(',')[1]);
+                const panRightB = parseFloat(rootStyle.getPropertyValue('--color-pan-right-accent').split(',')[2]);
+                
+                const initialBorderColor = rootStyle.getPropertyValue('--color-border-light').trim();
+
+
+                const isMuted = strip.querySelector('.ms-btn.mute').classList.contains('active');
+
+                // --- Text (h3, p, M/S buttons) opacity and glow ---
+                let targetOpacity = 1; // Default
+                let targetColorForH3 = primaryTextColor;
+                let targetColorForP = secondaryTextColor; // P often starts secondary
+                let targetColorForMS = primaryTextColor;
+                let targetTextShadow = 'none';
+
+                if (isMuted) {
+                    targetOpacity = 0.4;
+                    targetColorForH3 = mutedTextColor;
+                    targetColorForP = mutedTextColor;
+                    targetColorForMS = mutedTextColor;
+                } else if (activeSoloStrips.size > 0 && !activeSoloStrips.has(channelId)) {
+                    targetOpacity = 0.4; // Dim if other strips are soloed and this one isn't
+                    targetColorForH3 = mutedTextColor;
+                    targetColorForP = mutedTextColor;
+                    targetColorForMS = mutedTextColor;
+                } else {
+                    // Not muted and either no solos or this channel is soloed
+                    targetOpacity = 1; 
+                    
+                    // Apply fader-based glow if channel is active and fader is up
+                    const glowIntensity = faderPercentage / 100; // 0 to 1
+                    if (faderPercentage > 5) { // Only apply glow if fader is above 5% to avoid faint glow at bottom
+                        // Interpolate color towards accent based on glowIntensity
+                        targetColorForH3 = `rgb(${Math.round(accentColorR * glowIntensity + (1 - glowIntensity) * parseInt(primaryTextColor.substring(1,3), 16))},
+                                                ${Math.round(accentColorG * glowIntensity + (1 - glowIntensity) * parseInt(primaryTextColor.substring(3,5), 16))},
+                                                ${Math.round(accentColorB * glowIntensity + (1 - glowIntensity) * parseInt(primaryTextColor.substring(5,7), 16))})`;
+                        targetColorForP = `rgb(${Math.round(accentColorR * glowIntensity + (1 - glowIntensity) * parseInt(secondaryTextColor.substring(1,3), 16))},
+                                               ${Math.round(accentColorG * glowIntensity + (1 - glowIntensity) * parseInt(secondaryTextColor.substring(3,5), 16))},
+                                               ${Math.round(accentColorB * glowIntensity + (1 - glowIntensity) * parseInt(secondaryTextColor.substring(5,7), 16))})`;
+                        targetColorForMS = targetColorForH3; // M/S buttons also get interpolated color
+                        
+                        targetTextShadow = `0 0 ${glowIntensity * 8}px rgba(${accentColorR}, ${accentColorG}, ${accentColorB}, ${glowIntensity * 0.7})`;
+                    }
+                }
+
+                // Apply text styles with GSAP for smooth transitions
+                gsap.to(h3, {
+                    color: targetColorForH3,
+                    textShadow: targetTextShadow,
+                    opacity: targetOpacity,
+                    duration: 0.3,
+                    ease: "power1.out"
+                });
+                gsap.to(p, {
+                    color: targetColorForP,
+                    textShadow: targetTextShadow,
+                    opacity: targetOpacity,
+                    duration: 0.3,
+                    ease: "power1.out"
+                });
+                msBtns.forEach(btn => {
+                    gsap.to(btn, {
+                        color: targetColorForMS,
+                        textShadow: targetTextShadow,
+                        opacity: targetOpacity,
+                        duration: 0.3,
+                        ease: "power1.out"
+                    });
+                });
+
+                // --- Channel Strip Border & Shadow (Pan Effect) ---
+                let newBorderColor = initialBorderColor;
+                let newBoxShadow = rootStyle.getPropertyValue('--color-shadow-outer-sm').trim();
+                
+                if (!isMuted && !(activeSoloStrips.size > 0 && !activeSoloStrips.has(channelId))) {
+                    // Only apply pan effect if channel is active (not muted/dimmed by solo)
+                    if (Math.abs(panRotation) > 1) { // Only apply if rotation is significant (threshold 1 degree)
+                        let panLerp = (panRotation + 45) / 90; // Normalize to 0-1 (0 for -45, 0.5 for 0, 1 for 45)
+                        let r, g, b;
+
+                        // Interpolate between left accent (blue), current accent (gold), and right accent (red)
+                        if (panLerp <= 0.5) { // From Left (blue) to Center (accent)
+                            r = gsap.utils.interpolate(panLeftR, accentColorR, panLerp * 2);
+                            g = gsap.utils.interpolate(panLeftG, accentColorG, panLerp * 2);
+                            b = gsap.utils.interpolate(panLeftB, accentColorB, panLerp * 2);
+                        } else { // From Center (accent) to Right (red)
+                            r = gsap.utils.interpolate(accentColorR, panRightR, (panLerp - 0.5) * 2);
+                            g = gsap.utils.interpolate(accentColorG, panRightG, (panLerp - 0.5) * 2);
+                            b = gsap.utils.interpolate(accentColorB, panRightB, (panLerp - 0.5) * 2);
+                        }
+                        
+                        newBorderColor = `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, 0.6)`;
+                        newBoxShadow = `var(--color-shadow-outer-sm), 0 0 10px rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, 0.3)`;
+                    }
+                }
+
+                gsap.to(strip, {
+                    borderColor: newBorderColor,
+                    boxShadow: newBoxShadow,
+                    duration: 0.3, // Smoother transition for pan effect
+                    ease: "power1.out"
+                });
+            }
+
+
+            /**
+             * Updates the visual state of all channel strips.
+             * Call this after any solo/mute state change.
+             */
+            function updateAllChannelStripStates() {
+                const channelStrips = document.querySelectorAll('.channel-strip'); // Re-query to ensure up-to-date NodeList
+                channelStrips.forEach(strip => {
+                    updateChannelStripVisuals(strip);
+                });
+            }
+
+            // Fader Drag Logic
+            document.querySelectorAll('.fader-knob').forEach(faderKnob => {
+                let isDragging = false;
+                let startY;
+                let startBottom; // Stores initial bottom position in px
+                let channelStrip;
+                let faderTrackHeight;
+
+                const startDrag = (e) => {
+                    isDragging = true;
+                    // Use e.touches[0].clientY for touch events
+                    startY = e.clientY || e.touches[0].clientY; 
+                    channelStrip = faderKnob.closest('.channel-strip');
+                    faderTrackHeight = faderKnob.parentElement.offsetHeight;
+                    startBottom = parseFloat(getComputedStyle(faderKnob).bottom); // Get current bottom in px
+
+                    document.addEventListener('mousemove', onMouseMoveFader);
+                    document.addEventListener('mouseup', onMouseUpFader);
+                    document.addEventListener('touchmove', onTouchMoveFader, { passive: false }); // Passive false to allow preventDefault
+                    document.addEventListener('touchend', onTouchUpFader);
+                };
+
+                const onMouseMoveFader = (e) => {
+                    if (!isDragging) return;
+                    const deltaY = (e.clientY || e.touches[0].clientY) - startY; // positive is down, negative is up
+                    let newBottomPx = startBottom - deltaY;
+
+                    // Clamp newBottomPx between 0 and faderTrackHeight
+                    newBottomPx = Math.max(0, Math.min(newBottomPx, faderTrackHeight));
+
+                    faderKnob.style.bottom = `${newBottomPx}px`;
+
+                    // Calculate percentage (0% at bottom, 100% at top)
+                    const percentage = (newBottomPx / faderTrackHeight) * 100;
+                    channelStrip.dataset.faderPercentage = percentage; // Store the new percentage
+                    updateChannelStripVisuals(channelStrip); // Update visuals based on stored percentage
+                };
+
+                const onMouseUpFader = () => {
+                    isDragging = false;
+                    document.removeEventListener('mousemove', onMouseMoveFader);
+                    document.removeEventListener('mouseup', onMouseUpFader);
+                };
+
+                const onTouchMoveFader = (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault(); // Prevent scrolling while dragging
+                    onMouseMoveFader(e); // Reuse mouse move logic for touch
+                };
+
+                const onTouchUpFader = () => {
+                    isDragging = false;
+                    document.removeEventListener('touchmove', onTouchMoveFader);
+                    document.removeEventListener('touchend', onTouchUpFader);
+                };
+
+                faderKnob.addEventListener('mousedown', startDrag);
+                faderKnob.addEventListener('touchstart', startDrag, { passive: false }); // Passive false to allow preventDefault
+            });
+
+            // Pan Knob Drag Logic
+            document.querySelectorAll('.pan-knob').forEach(panKnob => {
+                let isDragging = false;
+                let startX;
+                let startRotation; // Stores initial rotation in degrees
+                let panIndicator;
+                let channelStrip;
+
+                const startDrag = (e) => {
+                    e.preventDefault(); // Prevent text selection/scrolling during drag
+                    isDragging = true;
+                    // Use e.touches[0].clientX for touch events
+                    startX = e.clientX || e.touches[0].clientX;
+                    panIndicator = panKnob.querySelector('.pan-knob-indicator');
+                    channelStrip = panKnob.closest('.channel-strip');
+                    
+                    // Get current rotation from style, default to 0 if not set
+                    const styleTransform = getComputedStyle(panIndicator).transform;
+                    const matrix = styleTransform.match(/matrix.*\((.+)\)/);
+                    if (matrix) {
+                        const values = matrix[1].split(', ');
+                        const a = values[0];
+                        const b = values[1];
+                        startRotation = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+                    } else {
+                        startRotation = 0;
+                    }
+
+                    document.addEventListener('mousemove', onMouseMovePan);
+                    document.addEventListener('mouseup', onMouseUpPan);
+                    document.addEventListener('touchmove', onTouchMovePan, { passive: false });
+                    document.addEventListener('touchend', onTouchUpPan);
+                };
+
+                const onMouseMovePan = (e) => {
+                    if (!isDragging) return;
+                    const deltaX = (e.clientX || e.touches[0].clientX) - startX;
+                    let newRotation = startRotation + (deltaX * 0.5); // Adjust sensitivity
+
+                    // Clamp rotation between -45 and 45 degrees
+                    newRotation = Math.max(-45, Math.min(newRotation, 45));
+
+                    panIndicator.style.transform = `translate(-50%, -50%) rotate(${newRotation}deg)`;
+                    channelStrip.dataset.panRotation = newRotation; // Store the new rotation
+                    updateChannelStripVisuals(channelStrip); // Update visuals based on stored rotation
+                };
+
+                const onMouseUpPan = () => {
+                    isDragging = false;
+                    document.removeEventListener('mousemove', onMouseMovePan);
+                    document.removeEventListener('mouseup', onMouseUpPan);
+                };
+
+                const onTouchMovePan = (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault(); // Prevent scrolling while dragging
+                    onMouseMovePan(e); // Reuse mouse move logic for touch
+                };
+
+                const onTouchUpPan = () => {
+                    isDragging = false;
+                    document.removeEventListener('touchmove', onTouchMovePan);
+                    document.removeEventListener('touchend', onTouchUpPan);
+                };
+
+                panKnob.addEventListener('mousedown', startDrag);
+                panKnob.addEventListener('touchstart', startDrag, { passive: false });
+            });
+
+
+            // Mute/Solo Button Logic (Refined)
+            const msButtons = document.querySelectorAll('.ms-btn');
+            msButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const isMuteBtn = button.classList.contains('mute');
+                    const channelStrip = button.closest('.channel-strip');
+                    const muteButton = channelStrip.querySelector('.ms-btn.mute');
+                    const soloButton = channelStrip.querySelector('.ms-btn.solo');
+                    const channelId = channelStrip.dataset.channelId;
+
+                    if (isMuteBtn) {
+                        // Mute button logic
+                        muteButton.classList.toggle('active');
+                        if (muteButton.classList.contains('active')) {
+                            // If muted, ensure solo is off for this strip
+                            soloButton.classList.remove('active');
+                            activeSoloStrips.delete(channelId); // Remove from solo list
+                        }
+                    } else { // Solo button logic
+                        soloButton.classList.toggle('active');
+                        if (soloButton.classList.contains('active')) {
+                            // If soloed, ensure mute is off for this strip
+                            muteButton.classList.remove('active');
+                            activeSoloStrips.add(channelId); // Add to solo list
+                        } else {
+                            activeSoloStrips.delete(channelId); // Remove from solo list
+                        }
+                    }
+                    
+                    // Update all channel strip visuals based on new global solo/mute states
+                    updateAllChannelStripStates();
+                    console.log(`${channelStrip.querySelector('h3').textContent} Mute: ${muteButton.classList.contains('active') ? 'ON' : 'OFF'}, Solo: ${soloButton.classList.contains('active') ? 'ON' : 'OFF'}`);
+                });
+            });
+
+
+            // --- Contact Form Handling (Formspree) ---
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (event) => {
+                    event.preventDefault(); // Prevent default form submission
+
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    
+                    formStatus.textContent = 'Transmitting signal...';
+                    formStatus.className = 'mt-4 text-sm text-yellow-500 font-mono';
+                    form.querySelector('button[type="submit"]').disabled = true; // Disable button during submission
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: form.method,
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json' // Crucial for Formspree to return JSON response
+                            }
+                        });
+
+                        if (response.ok) {
+                            formStatus.textContent = 'Signal transmitted successfully!';
+                            formStatus.className = 'mt-4 text-sm text-green-500 font-mono';
+                            form.reset(); // Clear the form
+                        } else {
+                            const data = await response.json();
+                            if (data.errors) {
+                                formStatus.textContent = 'ERROR: ' + data.errors.map(error => error.message).join(', ');
+                            } else {
+                                formStatus.textContent = 'ERROR: Failed to transmit signal.';
+                            }
+                            formStatus.className = 'mt-4 text-sm text-red-500 font-mono';
+                        }
+                    } catch (error) {
+                        console.error('Submission error:', error);
+                        formStatus.textContent = 'ERROR: Network issue or unexpected error.';
+                        formStatus.className = 'mt-4 text-sm text-red-500 font-mono';
+                    } finally {
+                        form.querySelector('button[type="submit"]').disabled = false; // Re-enable button
+                    }
+                });
+            }
+
+            // --- Update Current Year in Footer ---
+            if (currentYearEl) {
+                currentYearEl.textContent = new Date().getFullYear();
+            }
+
+            // --- Initial theme application ---
+            applyTheme('stop'); // Set the default theme to 'stop' (gold) on page load.
+
+            // --- Console Log for Initialization ---
+            console.log("Anjohn Ajiesh - Music Production Interface Loaded.");
+
+            // --- PS4-style Carousel Logic ---
+            const portfolioCarousel = document.getElementById('portfolio-carousel');
+            const carouselLeftBtn = document.getElementById('carousel-left-btn');
+            const carouselRightBtn = document.getElementById('carousel-right-btn');
+            // Select all cards (they already have data-card-id from YT API setup or manually added in HTML)
+            const carouselCards = document.querySelectorAll('.portfolio-card'); 
+            const carouselDotsContainer = document.getElementById('carousel-dots-container'); // New dots container
+
+            let currentCardIndex = 0; // Track the currently viewed card
+
+            // Generate carousel dots
+            function generateCarouselDots() {
+                if (!carouselDotsContainer || carouselCards.length === 0) return;
+                carouselDotsContainer.innerHTML = ''; // Clear existing dots
+                carouselCards.forEach((_, index) => {
+                    const dot = document.createElement('div');
+                    dot.classList.add('carousel-indicator-dot');
+                    dot.dataset.index = index;
+                    if (index === currentCardIndex) {
+                        dot.classList.add('active');
+                    }
+                    dot.addEventListener('click', () => scrollToCard(index));
+                    carouselDotsContainer.appendChild(dot);
+                });
+            }
+
+            function updateCarouselDots() {
+                const dots = carouselDotsContainer.querySelectorAll('.carousel-indicator-dot');
+                dots.forEach((dot, index) => {
+                    if (index === currentCardIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+
+            function updateCarouselButtons() {
+                if (!portfolioCarousel) return; 
+
+                // Buttons are always visible now, but can still adjust opacity if at ends
+                const scrollTolerance = 5; // A small tolerance for floating point scroll positions
+                carouselLeftBtn.style.opacity = portfolioCarousel.scrollLeft > scrollTolerance ? '1' : '0.5';
+                carouselRightBtn.style.opacity = (portfolioCarousel.scrollLeft + portfolioCarousel.clientWidth + scrollTolerance) < portfolioCarousel.scrollWidth ? '1' : '0.5';
+                
+                // Disable/enable buttons for a stronger visual cue
+                carouselLeftBtn.disabled = !(portfolioCarousel.scrollLeft > scrollTolerance);
+                carouselRightBtn.disabled = !((portfolioCarousel.scrollLeft + portfolioCarousel.clientWidth + scrollTolerance) < portfolioCarousel.scrollWidth);
+            }
+
+            function scrollToCard(index) {
+                if (!portfolioCarousel || carouselCards.length === 0) return;
+
+                // Ensure index is within bounds
+                index = Math.max(0, Math.min(index, carouselCards.length - 1));
+                currentCardIndex = index;
+
+                const targetCard = carouselCards[index];
+                const cardOffsetLeft = targetCard.offsetLeft;
+                const cardWidth = targetCard.offsetWidth;
+                const containerWidth = portfolioCarousel.clientWidth;
+
+                // Calculate scroll position to center the target card
+                // This is a common approach to center items in a scroll view
+                const scrollX = cardOffsetLeft - (containerWidth / 2) + (cardWidth / 2);
+
+                gsap.to(portfolioCarousel, {
+                    scrollLeft: scrollX,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onUpdate: () => {
+                        updateCarouselButtons(); // Update button visibility during scroll
+                        updateActiveCarouselItemAndDots(); // Update active card and dots during scroll
+                    }
+                });
+
+                // Update active class immediately for smooth visual feedback
+                carouselCards.forEach((card, i) => {
+                    if (i === index) {
+                        card.classList.add('active-carousel-item');
+                    } else {
+                        card.classList.remove('active-carousel-item');
+                    }
+                });
+                updateCarouselDots(); // Update dots as well
+            }
+
+            // Intersection Observer to update active card/dots on manual scroll/swipe
+            let intersectionObserver;
+            function setupIntersectionObserver() {
+                if (intersectionObserver) {
+                    intersectionObserver.disconnect();
+                }
+                const options = {
+                    root: portfolioCarousel,
+                    rootMargin: '0px',
+                    threshold: 0.7 // A card is considered active if 70% or more is visible
+                };
+                intersectionObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const cardIndex = Array.from(carouselCards).indexOf(entry.target);
+                            if (cardIndex !== -1 && currentCardIndex !== cardIndex) {
+                                currentCardIndex = cardIndex;
+                                updateCarouselDots();
+                            }
+                        }
+                    });
+                }, options);
+
+                carouselCards.forEach(card => {
+                    intersectionObserver.observe(card);
+                });
+            }
+
+            // Call this on scroll to keep active class and dots in sync
+            function updateActiveCarouselItemAndDots() {
+                if (!portfolioCarousel || carouselCards.length === 0) return;
+
+                const scrollLeft = portfolioCarousel.scrollLeft;
+                const containerWidth = portfolioCarousel.clientWidth;
+                
+                // Find the card that is most centrally in view
+                let closestCardIndex = 0;
+                let minDistance = Infinity;
+
+                carouselCards.forEach((card, index) => {
+                    const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+                    const viewportCenter = scrollLeft + (containerWidth / 2);
+                    const distance = Math.abs(cardCenter - viewportCenter);
+
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCardIndex = index;
+                    }
+                });
+
+                if (closestCardIndex !== currentCardIndex) {
+                    currentCardIndex = closestCardIndex;
+                    updateCarouselDots();
+                }
+            }
+
+
+            if (portfolioCarousel) {
+                // Initial setup for carousel
+                generateCarouselDots(); // Generate dots before setting up scrolling
+                setupIntersectionObserver(); // Set up observer for dynamic updates
+
+                carouselLeftBtn.addEventListener('click', () => {
+                    scrollToCard(currentCardIndex - 1);
+                });
+
+                carouselRightBtn.addEventListener('click', () => {
+                    scrollToCard(currentCardIndex + 1);
+                });
+
+                // Initial scroll and update for first card
+                gsap.delayedCall(0.1, () => {
+                    scrollToCard(0); 
+                    updateCarouselButtons();
+                });
+
+                // Update buttons on manual scroll (including touch swipe)
+                portfolioCarousel.addEventListener('scroll', updateCarouselButtons);
+                // Also update active card/dots on scroll for manual swiping
+                portfolioCarousel.addEventListener('scroll', updateActiveCarouselItemAndDots);
+
+
+                // Add keyboard navigation for left/right arrows
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        scrollToCard(currentCardIndex - 1);
+                    } else if (e.key === 'ArrowRight') {
+                        scrollToCard(currentCardIndex + 1); 
+                    }
+                });
+            }
+
+            // Initial call to set correct visual states for mixer
+            updateAllChannelStripStates();
+            
+            // Re-apply visual states to all channel strips to ensure data attributes are read on load
+            const channelStrips = document.querySelectorAll('.channel-strip'); // Re-query here to ensure fresh NodeList
+            channelStrips.forEach(strip => {
+                // Manually set initial fader and pan indicator positions based on data attributes
+                const faderKnob = strip.querySelector('.fader-knob');
+                const panIndicator = strip.querySelector('.pan-knob-indicator');
+                const faderTrackHeight = faderKnob.parentElement.offsetHeight;
+
+                if (faderKnob && faderTrackHeight > 0) {
+                    const faderPercentage = parseFloat(strip.dataset.faderPercentage || 50);
+                    faderKnob.style.bottom = `${(faderPercentage / 100) * faderTrackHeight}px`;
+                }
+
+                if (panIndicator) {
+                    const panRotation = parseFloat(strip.dataset.panRotation || 0);
+                    panIndicator.style.transform = `translate(-50%, -50%) rotate(${panRotation}deg)`;
+                }
+                updateChannelStripVisuals(strip);
+            });
+        });
+    </script>
+    <!-- Dynamic Google Sheets & WaveSurfer Integration -->
+<script>
+    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwVeb-TQEJSUMqnuj7MCUEeQ4BMJGaSOF-qxVRNSpbrsDGWF44_ULXLRD5gkfmmVm-d/exec";
+    const activeWaveforms = {};
+
+    function ExtractDriveId(url) {
+      if (!url) return null;
+      const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      return match ? match[1] : null;
+    }
+
+    function createMediaElement(project) {
+      const mediaUrlVal = project['media url'] || project.mediaurl;
+      const mediaTypeVal = (project['media type'] || project.mediatype || '').toLowerCase().trim();
+
+      switch (mediaTypeVal) {
+        case 'youtube':
+          let ytUrl = mediaUrlVal;
+          if (ytUrl.includes('watch?v=')) {
+            ytUrl = ytUrl.replace('watch?v=', 'embed/');
+          } else if (ytUrl.includes('youtu.be/')) {
+            ytUrl = ytUrl.replace('youtu.be/', 'www.youtube.com/embed/');
+          }
+          return `
+            <div class="relative w-full h-48 overflow-hidden rounded border border-[rgba(255,255,255,0.1)] bg-black">
+              <iframe class="absolute inset-0 w-full h-full" src="${ytUrl}" allowfullscreen></iframe>
+            </div>`;
+
+        case 'drive-video':
+          const fileId = ExtractDriveId(mediaUrlVal);
+          const embedUrl = fileId 
+            ? `https://drive.google.com/file/d/${fileId}/preview` 
+            : mediaUrlVal;
+
+          // Scaled wrapper crops the Drive title bar and forces full edge-to-edge video fill
+          return `
+            <div class="relative w-full h-48 overflow-hidden rounded border border-[rgba(255,255,255,0.1)] bg-black">
+              <iframe 
+                src="${embedUrl}" 
+                class="absolute w-[125%] h-[135%] -top-[18%] -left-[12.5%] max-w-none pointer-events-auto border-0" 
+                allow="autoplay" 
+                allowfullscreen>
+              </iframe>
+            </div>`;
+
+        case 'audio':
+          return `
+            <div class="waveform-card bg-[#181818] p-3 rounded-md border border-[rgba(255,255,255,0.1)]">
+              <div class="waveform-visualizer w-full mb-3" id="waveform-${project.id}"></div>
+              <button onclick="togglePlay('${project.id}')" class="btn-custom btn-custom-primary text-xs py-2 px-4 rounded-full font-bold">
+                <i class="fas fa-play mr-2"></i> Play / Pause
+              </button>
+            </div>`;
+
+        default:
+          return `<p class="text-xs text-gray-500">No Media Available</p>`;
+      }
+    }
+
+    function initWaveform(projectId, audioUrl) {
+      const wavesurfer = WaveSurfer.create({
+        container: `#waveform-${projectId}`,
+        waveColor: '#4A4A4A',
+        progressColor: '#B58744',
+        cursorColor: '#00A3CC',
+        barWidth: 2,
+        barRadius: 2,
+        responsive: true,
+        height: 60,
+        url: audioUrl
+      });
+      activeWaveforms[projectId] = wavesurfer;
+    }
+
+    function togglePlay(projectId) {
+      if (activeWaveforms[projectId]) {
+        activeWaveforms[projectId].playPause();
+      }
+    }
+
+    async function loadProjects() {
+      const container = document.getElementById('portfolio-carousel');
+      if (!container) return;
+
+      try {
+        const response = await fetch(SHEET_API_URL);
+        const rawProjects = await response.json();
+
+        const projects = rawProjects.filter(p => (p.title || p.Title) && (p.title || p.Title).trim() !== "");
+
+        container.innerHTML = projects.map((project, index) => {
+          project.id = project.id || `proj-${index}`;
+          const title = project.title || project.Title || "Untitled Project";
+          const category = project.category || "General";
+          const description = project.description || "";
+
+          return `
+            <div class="portfolio-card flex-shrink-0 w-[320px] bg-[#383838] p-5 rounded-lg border border-[rgba(255,255,255,0.08)] shadow-lg flex flex-col justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-[#E8E8E8] mb-1">${title}</h3>
+                <div class="text-xs text-[#B58744] font-mono font-bold uppercase mb-3">${category}</div>
+                <div class="media-container mb-3" id="media-box-${project.id}">
+                  ${createMediaElement(project)}
+                </div>
+              </div>
+              <div class="text-xs text-[#B0B0B0] leading-relaxed">${description}</div>
+            </div>
+          `;
+        }).join('');
+
+        projects.forEach(project => {
+          const mediaTypeVal = (project['media type'] || project.mediatype || '').toLowerCase().trim();
+          if (mediaTypeVal === 'audio') {
+            const mediaUrlVal = project['media url'] || project.mediaurl;
+            const fileId = ExtractDriveId(mediaUrlVal);
+            const streamUrl = fileId ? `https://lh3.googleusercontent.com/d/${fileId}` : mediaUrlVal;
+            initWaveform(project.id, streamUrl);
+          }
+        });
+
+      } catch (err) {
+        console.error("Failed to load project media from Google Sheets:", err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProjects);
+</script>
+</body>
+</html>
+
